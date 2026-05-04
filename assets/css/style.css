@@ -131,16 +131,18 @@ body {
 /* شريط الإعلانات */
 .ads-slider-container {
     position: relative;
-    max-width: 1200px;
-    margin: 1rem auto;
+    width: 100%;
+    margin: 0;
+    padding: 0;
     overflow: hidden;
-    border-radius: 20px;
+    /* border-radius: 20px; */
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 .ads-slider {
     display: flex;
     transition: transform 0.5s ease;
+    width: 100%;
 }
 
 .ad-slide {
@@ -150,19 +152,20 @@ body {
 
 .ad-slide img {
     width: 100%;
-    height: 200px;
+    height: 300px;
     object-fit: cover;
     display: block;
 }
 
 .ad-text {
     position: absolute;
-    bottom: 20px;
-    left: 20px;
+    bottom: 30px;
+    right: 30px;
     background: rgba(0,0,0,0.6);
     color: white;
-    padding: 5px 15px;
-    border-radius: 30px;
+    padding: 8px 20px;
+    border-radius: 40px;
+    font-size: 1rem;
 }
 
 .slider-btn {
@@ -171,32 +174,38 @@ body {
     transform: translateY(-50%);
     background: rgba(255,255,255,0.7);
     border: none;
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     cursor: pointer;
+    z-index: 10;
+    font-size: 1.2rem;
+}
+.slider-btn:hover{
+    background: rgb(0, 0, 0,0.8);
 }
 
 .prev {
-    right: 10px;
+    right: 15px;
 }
 
 .next {
-    left: 10px;
+    left: 15px;
 }
 
 .slider-dots {
     position: absolute;
-    bottom: 10px;
+    bottom: 15px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 8px;
+    gap: 10px;
+    z-index: 10;
 }
 
 .dot {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     background: rgba(255,255,255,0.5);
     border-radius: 50%;
     cursor: pointer;
@@ -446,7 +455,17 @@ body {
     }
     
     .ad-slide img {
-        height: 150px;
+        height: 180px;
+    }
+    .ad-text {
+        bottom: 15px;
+        right: 15px; font-size:
+        0.8rem; padding: 5px 12px;
+    }
+    .slider-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 0.9rem;
     }
     
     .categories-grid {
