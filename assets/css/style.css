@@ -168,9 +168,10 @@ a {
 
 .ad-slide img {
     width: 100%;
-    height: 250px;
+    height: 400px;
     object-fit: cover;
-    display: block;
+    /* display: block; */
+    object-position: center center;
 }
 
 .ad-text {
@@ -461,6 +462,12 @@ a {
 .footer-bottom strong {
     color: #e5989b;
 }
+@media (max-width: 1200px){
+    .ad-slide img{
+        height: 350px;
+    }
+} 
+
 
 /* ===== استجابة للشاشات الصغيرة ===== */
 @media (max-width: 768px) {
@@ -473,7 +480,7 @@ a {
     }
     
     .ad-slide img {
-        height: 180px;
+        height: 200px;
     }
     
     .slider-btn {
