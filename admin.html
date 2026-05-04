@@ -29,11 +29,15 @@
         .product-list { max-height: 300px; overflow-y: auto; margin-top: 0.5rem; }
         .product-item { border-bottom: 1px solid #eee; padding: 8px 0; margin-bottom: 5px; }
         .edit-form { background: #f9f9f9; padding: 0.8rem; border-radius: 15px; margin-top: 10px; display: none; }
+        .logout-btn { background: #e5989b; margin-bottom: 1rem; width: auto; padding: 6px 15px; border-radius: 20px; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1><i class="fas fa-crown"></i> لوحة تحكم الأدمن - إناث</h1>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h1><i class="fas fa-crown"></i> لوحة تحكم الأدمن - إناث</h1>
+        <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> تسجيل خروج</button>
+    </div>
     <div class="note">يمكنك إدارة الفئات والمنتجات والإعلانات. جميع التغييرات تظهر فوراً في المتجر.</div>
 
     <!-- ===================== قسم الإعلانات ===================== -->
@@ -69,25 +73,38 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script> <!-- مكتبة المصادقة -->
 <script>
-    // الحماية
-    if (sessionStorage.getItem('adminAuth') !== 'true') {
-        window.location.href = 'login.html';
-    }
-
-    // إعدادات Firebase (نفس التي في script.js)
-    const firebaseConfig = {
-        apiKey: "AIzaSyD6CcJDUixgCQxe_al_j2aEiinUQ2X05s",
-        authDomain: "enath-7d5e8.firebaseapp.com",
-        databaseURL: "https://enath-7d5e8-default-rtdb.firebaseio.com",
-        projectId: "enath-7d5e8",
-        storageBucket: "enath-7d5e8.firebasestorage.app",
-        messagingSenderId: "101026768739",
-        appId: "1:101026768739:web:c3635b04e972914a5b1556"
-    };
+    // ==================== التحقق من تسجيل الدخول ====================
+    // إعدادات Firebase (يجب أن تكون مطابقة لإعدادات مشروعك)
+const firebaseConfig = {
+  apiKey: "AIzaSyD6CcJDUiXgCQxe_aL_j2aEi1nuQ2X2o5s",
+  authDomain: "enath-7d5e8.firebaseapp.com",
+  databaseURL: "https://enath-7d5e8-default-rtdb.firebaseio.com",
+  projectId: "enath-7d5e8",
+  storageBucket: "enath-7d5e8.firebasestorage.app",
+  messagingSenderId: "101026768739",
+  appId: "1:101026768739:web:c3635b04e972914a5b1556"
+};
     firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
     const db = firebase.database();
 
+    // التحقق من حالة المستخدم - منع الوصول المباشر
+    auth.onAuthStateChanged((user) => {
+        if (!user) {
+            window.location.href = 'login.html';
+        }
+    });
+
+    // تسجيل الخروج
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        auth.signOut().then(() => {
+            window.location.href = 'login.html';
+        });
+    });
+
+    // ==================== بقية دوال الإدارة (لم تتغير) ====================
     let ads = [], categories = [], products = [];
 
     async function loadData() {
@@ -242,7 +259,6 @@
         if (!image) image = "https://via.placeholder.com/200x200?text=منتج";
         products.push({ id: Date.now().toString(), name, price, oldprice, desc, image, categoryId: catId, active: true });
         await saveAll();
-        // تفريغ الحقول
         document.getElementById(`prodName_${catId}`).value = '';
         document.getElementById(`prodPrice_${catId}`).value = '';
         document.getElementById(`prodOld_${catId}`).value = '';
@@ -263,7 +279,7 @@
     };
     window.deleteProduct = async (id) => { products = products.filter(p => p.id !== id); await saveAll(); };
 
-    // ---------- جميع المنتجات (عرض عام) ----------
+    // ---------- جميع المنتجات ----------
     function renderProducts() {
         const div = document.getElementById('productsList');
         const catsMap = Object.fromEntries(categories.map(c => [c.id, c.name]));
@@ -304,7 +320,6 @@
     };
     window.toggleProduct = async (id) => { const prod = products.find(p => p.id === id); prod.active = !prod.active; await saveAll(); };
 
-    // إضافة فئة جديدة
     document.getElementById('addCategoryBtn').onclick = async () => {
         const name = document.getElementById('newCatName').value.trim();
         const img = document.getElementById('newCatImage').value.trim();
