@@ -120,6 +120,13 @@
     </style>
 </head>
 <body>
+    <script>
+    // التحقق من المصادقة
+    if (sessionStorage.getItem('adminAuthenticated') !== 'true') {
+        window.location.href = 'login.html';
+    }
+</script>
+    
 <div class="container">
     <h1><i class="fas fa-crown"></i> لوحة تحكم الأدمن - أناث</h1>
     <div class="note">
