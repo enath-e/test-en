@@ -16,12 +16,21 @@ const database = firebase.database();
 let categories = [];
 let products = [];
 let ads = [];
+<<<<<<< HEAD
 let currentProduct = null;
 
 // ===================== تحميل البيانات =====================
 async function loadData() {
     showLoading();
     try {
+=======
+
+// ===================== تحميل البيانات من Firebase =====================
+async function loadData() {
+    showLoading();
+    try {
+        // تحميل الفئات
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
         const catSnap = await database.ref('categories').once('value');
         if (catSnap.val()) {
             categories = Object.keys(catSnap.val()).map(key => ({ id: key, ...catSnap.val()[key] }));
@@ -40,6 +49,10 @@ async function loadData() {
             await saveCategories();
         }
 
+<<<<<<< HEAD
+=======
+        // تحميل المنتجات
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
         const prodSnap = await database.ref('products').once('value');
         if (prodSnap.val()) {
             products = Object.keys(prodSnap.val()).map(key => ({ id: key, ...prodSnap.val()[key] }));
@@ -48,6 +61,10 @@ async function loadData() {
             await saveProducts();
         }
 
+<<<<<<< HEAD
+=======
+        // تحميل الإعلانات
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
         const adsSnap = await database.ref('ads').once('value');
         if (adsSnap.val()) {
             ads = Object.keys(adsSnap.val()).map(key => ({ id: key, ...adsSnap.val()[key] }));
@@ -57,7 +74,11 @@ async function loadData() {
         }
 
         renderCategories();
+<<<<<<< HEAD
         renderAds();
+=======
+        renderAds(); // استخدم طريقة السكرول الأفقي
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
         hideLoading();
     } catch (err) {
         console.error(err);
@@ -66,12 +87,19 @@ async function loadData() {
     }
 }
 
+<<<<<<< HEAD
+=======
+// دوال الحفظ (للتأكد من وجود بيانات أولية)
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
 async function saveCategories() {
     const obj = {};
     categories.forEach(c => { obj[c.id] = { name: c.name, image: c.image, active: c.active }; });
     await database.ref('categories').set(obj);
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
 async function saveProducts() {
     const obj = {};
     products.forEach(p => {
@@ -82,13 +110,17 @@ async function saveProducts() {
     });
     await database.ref('products').set(obj);
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
 async function saveAds() {
     const obj = {};
     ads.forEach(a => { obj[a.id] = { image: a.image, text: a.text || '', active: a.active }; });
     await database.ref('ads').set(obj);
 }
 
+<<<<<<< HEAD
 // دالة تحويل الريال إلى دولار (إذا احتجتها لاحقاً)
 function convertToUSD(sarPrice) {
     if (!sarPrice) return '0';
@@ -97,6 +129,9 @@ function convertToUSD(sarPrice) {
 }
 
 // ===================== عرض الفئات =====================
+=======
+// ===================== عرض الفئات والمنتجات =====================
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
 function renderCategories() {
     const container = document.getElementById('categoriesGrid');
     if (!container) return;
@@ -119,7 +154,10 @@ function renderCategories() {
     });
 }
 
+<<<<<<< HEAD
 // ===================== عرض المنتجات في سكرول أفقي =====================
+=======
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
 function showProductsByCategory(catId) {
     const category = categories.find(c => c.id === catId);
     const catProducts = products.filter(p => p.categoryId === catId && p.active);
@@ -130,11 +168,19 @@ function showProductsByCategory(catId) {
         scrollDiv.innerHTML = '<div style="padding:20px; text-align:center;">لا توجد منتجات</div>';
     } else {
         scrollDiv.innerHTML = catProducts.map(p => `
+<<<<<<< HEAD
             <div class="product-card" data-product-id="${p.id}">
                 <img src="${p.image}" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=صورة+غير+متوفرة'">
                 <div class="product-info">
                     <div class="product-name">${p.name}</div>
                     <div><span class="product-price">${p.price} $</span>${p.oldprice ? `<span class="product-oldprice">${p.oldprice} $</span>` : ''}</div>
+=======
+            <div class="product-card">
+                <img src="${p.image}" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=صورة+غير+متوفرة'">
+                <div class="product-info">
+                    <div class="product-name">${p.name}</div>
+                    <div><span class="product-price"> $ ${p.price} </span>${p.oldprice ? `<span class="product-oldprice"> $ ${p.oldprice}  </span>` : ''}</div>
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
                     <div class="product-desc">${p.desc || ''}</div>
                 </div>
             </div>
@@ -142,6 +188,7 @@ function showProductsByCategory(catId) {
     }
     document.getElementById('productsSection').style.display = 'block';
     document.body.style.overflow = 'hidden';
+<<<<<<< HEAD
 
     // إضافة حدث الضغط على المنتج لفتح نافذة الشراء
     document.querySelectorAll('.product-card').forEach(card => {
@@ -152,6 +199,8 @@ function showProductsByCategory(catId) {
             if (product) openProductModal(product);
         };
     });
+=======
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
 }
 
 document.getElementById('closeProductsBtn')?.addEventListener('click', () => {
@@ -159,6 +208,7 @@ document.getElementById('closeProductsBtn')?.addEventListener('click', () => {
     document.body.style.overflow = 'auto';
 });
 
+<<<<<<< HEAD
 // ===================== نافذة تفاصيل المنتج والشراء =====================
 function openProductModal(product) {
     currentProduct = product;
@@ -218,6 +268,9 @@ document.getElementById('productModal')?.addEventListener('click', (e) => {
 });
 
 // ===================== عرض الإعلانات (سكرول أفقي) =====================
+=======
+// ===================== عرض الإعلانات (طريقة السكرول الأفقي البسيطة) =====================
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
 function renderAds() {
     const activeAds = ads.filter(ad => ad.active);
     const slider = document.getElementById('adsSlider');
@@ -228,6 +281,10 @@ function renderAds() {
         return;
     }
 
+<<<<<<< HEAD
+=======
+    // بناء جميع الإعلانات كشرائح أفقية
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
     slider.innerHTML = activeAds.map(ad => `
         <div class="ad-slide">
             <img src="${ad.image}" onerror="this.src='https://via.placeholder.com/1200x400?text=صورة+غير+متوفرة'">
@@ -235,27 +292,54 @@ function renderAds() {
         </div>
     `).join('');
     
+<<<<<<< HEAD
     const prevBtn = document.getElementById('prevAdBtn');
     const nextBtn = document.getElementById('nextAdBtn');
     if (prevBtn && nextBtn && activeAds.length > 1) {
+=======
+    // إضافة أزرار التنقل البسيطة (إن وجدت في HTML)
+    const prevBtn = document.getElementById('prevAdBtn');
+    const nextBtn = document.getElementById('nextAdBtn');
+    if (prevBtn && nextBtn && activeAds.length > 1) {
+        // إزالة المستمعات القديمة لتجنب التكرار
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
         const newPrev = prevBtn.cloneNode(true);
         const newNext = nextBtn.cloneNode(true);
         if (prevBtn.parentNode) prevBtn.parentNode.replaceChild(newPrev, prevBtn);
         if (nextBtn.parentNode) nextBtn.parentNode.replaceChild(newNext, nextBtn);
         
+<<<<<<< HEAD
         newPrev.onclick = () => { slider.scrollBy({ left: -slider.clientWidth, behavior: 'smooth' }); };
         newNext.onclick = () => { slider.scrollBy({ left: slider.clientWidth, behavior: 'smooth' }); };
+=======
+        newPrev.onclick = () => {
+            slider.scrollBy({ left: -slider.clientWidth, behavior: 'smooth' });
+        };
+        newNext.onclick = () => {
+            slider.scrollBy({ left: slider.clientWidth, behavior: 'smooth' });
+        };
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
     }
 }
 
 // ===================== البحث =====================
+<<<<<<< HEAD
 function performSearch(keyword) {
     if (!keyword.trim()) {
+=======
+document.getElementById('searchInput')?.addEventListener('input', (e) => {
+    const kw = e.target.value.trim().toLowerCase();
+    if (!kw) {
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
         document.getElementById('productsSection').style.display = 'none';
         document.body.style.overflow = 'auto';
         return;
     }
+<<<<<<< HEAD
     const filtered = products.filter(p => p.name.toLowerCase().includes(keyword.toLowerCase()) && p.active);
+=======
+    const filtered = products.filter(p => p.name.toLowerCase().includes(kw) && p.active);
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
     const title = document.getElementById('selectedCategoryTitle');
     const scrollDiv = document.getElementById('productsScroll');
     title.innerHTML = 'نتائج البحث';
@@ -263,17 +347,26 @@ function performSearch(keyword) {
         scrollDiv.innerHTML = '<div style="padding:20px; text-align:center;">لا توجد نتائج</div>';
     } else {
         scrollDiv.innerHTML = filtered.map(p => `
+<<<<<<< HEAD
             <div class="product-card" data-product-id="${p.id}">
                 <img src="${p.image}" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=صورة+غير+متوفرة'">
                 <div class="product-info">
                     <div class="product-name">${p.name}</div>
                     <div class="product-price">${p.price} $</div>
+=======
+            <div class="product-card">
+                <img src="${p.image}" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=صورة+غير+متوفرة'">
+                <div class="product-info">
+                    <div class="product-name">${p.name}</div>
+                    <div class="product-price">${p.price} $ </div>
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
                 </div>
             </div>
         `).join('');
     }
     document.getElementById('productsSection').style.display = 'block';
     document.body.style.overflow = 'hidden';
+<<<<<<< HEAD
 
     document.querySelectorAll('#productsScroll .product-card').forEach(card => {
         card.onclick = (e) => {
@@ -293,6 +386,8 @@ document.getElementById('mobileSearchBtn')?.addEventListener('click', () => {
     const searchInput = document.getElementById('searchInput');
     searchInput.focus();
     searchInput.scrollIntoView({ behavior: 'smooth' });
+=======
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
 });
 
 // ===================== التنقل للموبايل =====================
@@ -301,7 +396,10 @@ document.querySelectorAll('.mobile-nav-item').forEach(item => {
         const page = item.getAttribute('data-page');
         if (page === 'home') {
             document.getElementById('productsSection').style.display = 'none';
+<<<<<<< HEAD
             document.getElementById('productModal').style.display = 'none';
+=======
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
             document.body.style.overflow = 'auto';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } else if (page === 'categories') {
@@ -329,6 +427,11 @@ window.addEventListener('click', (e) => {
 
 // ===================== أيقونات وهمية =====================
 document.getElementById('wishlistIcon')?.addEventListener('click', () => alert('المفضلة قريباً'));
+<<<<<<< HEAD
+=======
+document.getElementById('cartIcon')?.addEventListener('click', () => alert('عربة التسوق قريباً'));
+document.getElementById('mobileCart')?.addEventListener('click', () => alert('عربة التسوق قريباً'));
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
 
 // ===================== دوال مساعدة =====================
 function showLoading() {
@@ -343,11 +446,18 @@ function showLoading() {
         loader.style.display = 'flex';
     }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
 function hideLoading() {
     const loader = document.getElementById('globalLoader');
     if (loader) loader.style.display = 'none';
 }
 
+<<<<<<< HEAD
 // ===================== بدء تشغيل التطبيق =====================
+=======
+// ===================== بدء التشغيل =====================
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
 loadData();

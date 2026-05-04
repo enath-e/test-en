@@ -12,6 +12,7 @@
         .container { max-width: 1200px; margin: auto; background: white; border-radius: 30px; padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         h1, h2 { color: #b5838d; margin-bottom: 1rem; }
         .section { margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem; }
+<<<<<<< HEAD
         .card { background: #fefefe; border-radius: 20px; padding: 1rem; margin-bottom: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border: 1px solid #eee; }
         .flex { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -20,12 +21,25 @@
         button.small { padding: 4px 10px; font-size: 0.8rem; }
         button.success { background: #a3b18a; }
         input, textarea, select { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 15px; }
+=======
+        .grid-cats, .grid-products { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+        .card { background: #fefefe; border-radius: 20px; padding: 1rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border: 1px solid #eee; }
+        .card img { width: 60px; height: 60px; object-fit: cover; border-radius: 15px; }
+        .flex { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+        button { background: #b5838d; color: white; border: none; padding: 8px 16px; border-radius: 25px; cursor: pointer; margin-top: 5px; transition: 0.3s; }
+        button:hover { background: #e5989b; }
+        button.danger { background: #e5989b; }
+        button.danger:hover { background: #d17a7a; }
+        button.small { padding: 4px 10px; font-size: 0.8rem; }
+        input, textarea { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 15px; }
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
         .form-group { margin-bottom: 10px; }
         .badge { font-size: 0.7rem; padding: 2px 8px; border-radius: 20px; background: #e0e0e0; }
         .badge-active { background: #a3b18a; color: white; }
         .badge-inactive { background: #e5989b; color: white; }
         hr { margin: 1rem 0; }
         .note { background: #fef9e6; padding: 1rem; border-radius: 15px; margin-bottom: 1rem; border-right: 4px solid #e5989b; }
+<<<<<<< HEAD
         .product-list { max-height: 300px; overflow-y: auto; margin-top: 0.5rem; }
         .product-item { border-bottom: 1px solid #eee; padding: 8px 0; margin-bottom: 5px; }
         .edit-form { background: #f9f9f9; padding: 0.8rem; border-radius: 15px; margin-top: 10px; display: none; }
@@ -325,5 +339,167 @@
 
     loadData();
 </script>
+=======
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-crown"></i> لوحة تحكم الأدمن - إناث</h1>
+        <div class="note">يمكنك إدارة الفئات والمنتجات والإعلانات. جميع التغييرات تظهر فوراً في المتجر.</div>
+
+        <!-- قسم الإعلانات -->
+        <div class="section">
+            <h2><i class="fas fa-ad"></i> الإعلانات (السلايدر)</h2>
+            <div id="adsList"></div>
+            <button id="addAdBtn"><i class="fas fa-plus"></i> إضافة إعلان جديد</button>
+        </div>
+
+        <!-- قسم الفئات مع إضافة منتج داخلها -->
+        <div class="section">
+            <h2><i class="fas fa-th-large"></i> الفئات</h2>
+            <div id="categoriesList"></div>
+            <button id="addCategoryBtn"><i class="fas fa-plus"></i> إضافة فئة جديدة</button>
+        </div>
+
+        <!-- قسم المنتجات (عرض عام) -->
+        <div class="section">
+            <h2><i class="fas fa-boxes"></i> جميع المنتجات</h2>
+            <div id="productsList"></div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    <script>
+        // --- حماية الصفحة ---
+        if (sessionStorage.getItem('adminAuth') !== 'true') {
+            window.location.href = 'login.html';
+        }
+
+        // --- إعدادات Firebase (استبدلها بإعداداتك إن اختلفت) ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyD6CcJDUixgCQxe_al_j2aEiinUQ2X05s",
+            authDomain: "enath-7d5e8.firebaseapp.com",
+            databaseURL: "https://enath-7d5e8-default-rtdb.firebaseio.com",
+            projectId: "enath-7d5e8",
+            storageBucket: "enath-7d5e8.firebasestorage.app",
+            messagingSenderId: "101026768739",
+            appId: "1:101026768739:web:c3635b04e972914a5b1556"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let ads = [], categories = [], products = [];
+
+        async function loadAll() {
+            const adsSnap = await db.ref('ads').once('value');
+            ads = adsSnap.val() ? Object.keys(adsSnap.val()).map(k => ({ id: k, ...adsSnap.val()[k] })) : [];
+            const catSnap = await db.ref('categories').once('value');
+            categories = catSnap.val() ? Object.keys(catSnap.val()).map(k => ({ id: k, ...catSnap.val()[k] })) : [];
+            const prodSnap = await db.ref('products').once('value');
+            products = prodSnap.val() ? Object.keys(prodSnap.val()).map(k => ({ id: k, ...prodSnap.val()[k] })) : [];
+            renderAll();
+        }
+
+        async function saveAll() {
+            const adsObj = {}; ads.forEach(a => { adsObj[a.id] = { image: a.image, text: a.text || '', active: a.active }; });
+            await db.ref('ads').set(adsObj);
+            const catsObj = {}; categories.forEach(c => { catsObj[c.id] = { name: c.name, image: c.image, active: c.active }; });
+            await db.ref('categories').set(catsObj);
+            const prodsObj = {}; products.forEach(p => { prodsObj[p.id] = { name: p.name, price: p.price, oldprice: p.oldprice || '', desc: p.desc || '', image: p.image, categoryId: p.categoryId, active: p.active }; });
+            await db.ref('products').set(prodsObj);
+            renderAll();
+        }
+
+        function renderAll() {
+            renderAds();
+            renderCategories();
+            renderProducts();
+        }
+
+        // --- الإعلانات ---
+        function renderAds() {
+            const div = document.getElementById('adsList');
+            div.innerHTML = ads.map((ad, idx) => `
+                <div class="card">
+                    <div class="flex"><img src="${ad.image}" width="60"><span class="badge ${ad.active ? 'badge-active' : 'badge-inactive'}">${ad.active ? 'نشط' : 'مخفي'}</span></div>
+                    <p>${ad.text || 'بدون نص'}</p>
+                    <div class="flex"><button class="small" onclick="toggleAd('${ad.id}')"><i class="fas fa-eye${ad.active ? '-slash' : ''}"></i> ${ad.active ? 'إخفاء' : 'إظهار'}</button><button class="small danger" onclick="deleteAd('${ad.id}')">حذف</button></div>
+                </div>
+            `).join('');
+        }
+
+        window.toggleAd = async (id) => { const ad = ads.find(a => a.id === id); ad.active = !ad.active; await saveAll(); };
+        window.deleteAd = async (id) => { ads = ads.filter(a => a.id !== id); await saveAll(); };
+        document.getElementById('addAdBtn').onclick = async () => {
+            const img = prompt("رابط صورة الإعلان (مباشر)");
+            const text = prompt("نص الإعلان (اختياري)");
+            if (img) { ads.push({ id: Date.now().toString(), image: img, text: text || '', active: true }); await saveAll(); }
+        };
+
+        // --- الفئات مع إضافة منتج داخلها ---
+        function renderCategories() {
+            const div = document.getElementById('categoriesList');
+            div.innerHTML = categories.map(cat => `
+                <div class="card">
+                    <div class="flex"><img src="${cat.image}" width="50"><strong>${cat.name}</strong><span class="badge ${cat.active ? 'badge-active' : 'badge-inactive'}">${cat.active ? 'نشط' : 'مخفي'}</span></div>
+                    <div class="flex"><button class="small" onclick="editCategory('${cat.id}')">تعديل الفئة</button><button class="small" onclick="toggleCategory('${cat.id}')">${cat.active ? 'إخفاء' : 'إظهار'}</button><button class="small danger" onclick="deleteCategory('${cat.id}')">حذف الفئة</button></div>
+                    <hr>
+                    <div style="background:#f9f9f9; padding:0.5rem; border-radius:15px;">
+                        <h4>➕ إضافة منتج جديد لهذه الفئة</h4>
+                        <div class="form-group"><input type="text" id="prodName_${cat.id}" placeholder="اسم المنتج"></div>
+                        <div class="form-group"><input type="text" id="prodPrice_${cat.id}" placeholder="السعر (مثال: 120)"></div>
+                        <div class="form-group"><input type="text" id="prodOld_${cat.id}" placeholder="السعر قبل الخصم (اختياري)"></div>
+                        <div class="form-group"><input type="text" id="prodDesc_${cat.id}" placeholder="وصف المنتج"></div>
+                        <div class="form-group"><input type="text" id="prodImage_${cat.id}" placeholder="رابط الصورة (مباشر)"></div>
+                        <button class="small" onclick="addProductToCategory('${cat.id}')"><i class="fas fa-plus"></i> إضافة المنتج</button>
+                    </div>
+                    <hr>
+                    <h4>📦 منتجات هذه الفئة:</h4>
+                    <div id="prods_${cat.id}">${products.filter(p => p.categoryId === cat.id && p.active).map(p => `<div class="flex" style="border-bottom:1px solid #eee; padding:5px 0;"><span>${p.name} - ${p.price} ر.س</span><div><button class="small" onclick="editProduct('${p.id}')">تعديل</button><button class="small danger" onclick="deleteProduct('${p.id}')">حذف</button></div></div>`).join('')}</div>
+                </div>
+            `).join('');
+        }
+
+        window.addProductToCategory = async (catId) => {
+            const name = document.getElementById(`prodName_${catId}`).value.trim();
+            const price = document.getElementById(`prodPrice_${catId}`).value.trim();
+            if (!name || !price) { alert("الرجاء إدخال اسم المنتج وسعره"); return; }
+            const oldprice = document.getElementById(`prodOld_${catId}`).value.trim();
+            const desc = document.getElementById(`prodDesc_${catId}`).value.trim();
+            let image = document.getElementById(`prodImage_${catId}`).value.trim();
+            if (!image) image = "https://via.placeholder.com/200x200?text=منتج";
+            products.push({ id: Date.now().toString(), name, price, oldprice, desc, image, categoryId: catId, active: true });
+            await saveAll();
+            // تفريغ الحقول
+            document.getElementById(`prodName_${catId}`).value = '';
+            document.getElementById(`prodPrice_${catId}`).value = '';
+            document.getElementById(`prodOld_${catId}`).value = '';
+            document.getElementById(`prodDesc_${catId}`).value = '';
+            document.getElementById(`prodImage_${catId}`).value = '';
+        };
+
+        window.editCategory = async (id) => { const cat = categories.find(c => c.id === id); const newName = prompt("اسم الفئة الجديد", cat.name); const newImg = prompt("رابط صورة الفئة", cat.image); if (newName) cat.name = newName; if (newImg) cat.image = newImg; await saveAll(); };
+        window.toggleCategory = async (id) => { const cat = categories.find(c => c.id === id); cat.active = !cat.active; await saveAll(); };
+        window.deleteCategory = async (id) => { if (confirm("حذف الفئة سيحذف كل منتجاتها!")) { categories = categories.filter(c => c.id !== id); products = products.filter(p => p.categoryId !== id); await saveAll(); } };
+        document.getElementById('addCategoryBtn').onclick = async () => { const name = prompt("اسم الفئة الجديدة"); const img = prompt("رابط الصورة", "https://cdn-icons-png.flaticon.com/512/1077/1077035.png"); if (name) { categories.push({ id: Date.now().toString(), name, image: img, active: true }); await saveAll(); } };
+
+        window.editProduct = async (id) => { const prod = products.find(p => p.id === id); const newName = prompt("اسم المنتج", prod.name); const newPrice = prompt("السعر", prod.price); const newOld = prompt("السعر قبل الخصم", prod.oldprice || ''); const newDesc = prompt("الوصف", prod.desc || ''); const newImg = prompt("رابط الصورة", prod.image); if (newName) prod.name = newName; if (newPrice) prod.price = newPrice; prod.oldprice = newOld || ''; if (newDesc) prod.desc = newDesc; if (newImg) prod.image = newImg; await saveAll(); };
+        window.deleteProduct = async (id) => { products = products.filter(p => p.id !== id); await saveAll(); };
+        window.toggleProduct = async (id) => { const prod = products.find(p => p.id === id); prod.active = !prod.active; await saveAll(); };
+
+        function renderProducts() {
+            const div = document.getElementById('productsList');
+            const catsMap = Object.fromEntries(categories.map(c => [c.id, c.name]));
+            div.innerHTML = products.map(p => `
+                <div class="card"><div class="flex"><img src="${p.image}" width="40"><strong>${p.name}</strong><span>${p.price} ر.س</span><span class="badge ${p.active ? 'badge-active' : 'badge-inactive'}">${p.active ? 'نشط' : 'مخفي'}</span></div>
+                <div>الفئة: ${catsMap[p.categoryId] || 'غير محدد'}</div>
+                <div class="flex"><button class="small" onclick="editProduct('${p.id}')">تعديل</button><button class="small" onclick="toggleProduct('${p.id}')">${p.active ? 'إخفاء' : 'إظهار'}</button><button class="small danger" onclick="deleteProduct('${p.id}')">حذف</button></div></div>
+            `).join('');
+        }
+
+        loadAll();
+    </script>
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
 </body>
 </html>

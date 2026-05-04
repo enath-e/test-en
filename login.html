@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>دخول الأدمن - إناث</title>
+<<<<<<< HEAD
+=======
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; }
         body { background: #f4f1ea; display: flex; justify-content: center; align-items: center; height: 100vh; direction: rtl; }
@@ -22,6 +26,7 @@
     <div id="errorMsg" class="error"></div>
 </div>
 <script>
+<<<<<<< HEAD
     const correctPassword = "admin123";
     function checkPassword() {
         const pwd = document.getElementById('password').value;
@@ -32,6 +37,31 @@
             document.getElementById('errorMsg').innerText = 'كلمة المرور غير صحيحة';
         }
     }
+=======
+    // تعيين كلمة السر الصحيحة (يمكنك تغييرها)
+    const correctPassword = "admin123";
+
+    function checkPassword() {
+        const pwd = document.getElementById('password').value;
+        if (pwd === correctPassword) {
+            // تخزين حالة تسجيل الدخول في sessionStorage
+            sessionStorage.setItem('adminAuth', 'true');
+            // التوجيه إلى صفحة الأدمن
+            window.location.href = 'admin.html';
+        } else {
+            document.getElementById('errorMsg').innerText = '❌ كلمة المرور غير صحيحة';
+        }
+    }
+
+    // منع الوصول المباشر إلى admin.html إذا لم يتم تسجيل الدخول
+    // هذا الكود سيتم تنفيذه فقط إذا تم فتح هذه الصفحة كـ login.html
+    // التأكد أن المستخدم ليس في admin.html بالفعل
+    if (window.location.pathname.includes('admin.html')) {
+        if (sessionStorage.getItem('adminAuth') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    }
+>>>>>>> f37e9e541e2547bd028442ad40440446256127ad
 </script>
 </body>
 </html>
