@@ -2,66 +2,150 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>دخول الأدمن - إناث</title>
-<<<<<<< HEAD
-=======
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
->>>>>>> f37e9e541e2547bd028442ad40440446256127ad
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; }
-        body { background: #f4f1ea; display: flex; justify-content: center; align-items: center; height: 100vh; direction: rtl; }
-        .login-box { background: white; padding: 2rem; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 90%; max-width: 350px; text-align: center; }
-        .login-box h2 { color: #b5838d; margin-bottom: 1.5rem; }
-        .login-box input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 25px; }
-        .login-box button { background: #b5838d; color: white; border: none; padding: 12px; width: 100%; border-radius: 25px; cursor: pointer; }
-        .error { color: #e5989b; margin-top: 10px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #f4f1ea 0%, #e8e0d5 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            direction: rtl;
+            padding: 1rem;
+        }
+
+        .login-box {
+            background: white;
+            border-radius: 40px;
+            padding: 2rem 1.5rem;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-box h2 {
+            color: #b5838d;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+
+        .login-box p {
+            color: #888;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.2rem;
+            text-align: right;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-family: 'Tajawal', sans-serif;
+            transition: 0.3s;
+            background: #f9f9f9;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #b5838d;
+            box-shadow: 0 0 0 2px rgba(181, 131, 141, 0.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #b5838d;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        button:hover {
+            background: #9e6f7a;
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            color: #e5989b;
+            font-size: 0.8rem;
+            margin-top: 0.8rem;
+            padding: 0.5rem;
+            background: #fef0ef;
+            border-radius: 20px;
+            display: none;
+        }
+
+        .footer-note {
+            margin-top: 1.5rem;
+            font-size: 0.7rem;
+            color: #aaa;
+        }
     </style>
 </head>
 <body>
+
 <div class="login-box">
-    <h2>🔐 دخول لوحة التحكم</h2>
-    <input type="password" id="password" placeholder="كلمة المرور">
-    <button onclick="checkPassword()">دخول</button>
-    <div id="errorMsg" class="error"></div>
+    <h2>🔐 إناث</h2>
+    <p>لوحة تحكم الأدمن</p>
+
+    <div class="input-group">
+        <input type="password" id="adminPassword" placeholder="كلمة المرور" autocomplete="off">
+    </div>
+
+    <button onclick="login()">دخول</button>
+
+    <div id="errorMsg" class="error-message"></div>
+    <div class="footer-note">تم تصميم الموقع بواسطة Ahmad Kllawe</div>
 </div>
+
 <script>
-<<<<<<< HEAD
-    const correctPassword = "admin123";
-    function checkPassword() {
-        const pwd = document.getElementById('password').value;
-        if (pwd === correctPassword) {
-            sessionStorage.setItem('adminAuth', 'true');
-            window.location.href = 'admin.html';
-        } else {
-            document.getElementById('errorMsg').innerText = 'كلمة المرور غير صحيحة';
-        }
-    }
-=======
-    // تعيين كلمة السر الصحيحة (يمكنك تغييرها)
-    const correctPassword = "admin123";
+    // 🔐 كلمة المرور الصحيحة (يمكنك تغييرها هنا)
+    const CORRECT_PASSWORD = "admin123";
 
-    function checkPassword() {
-        const pwd = document.getElementById('password').value;
-        if (pwd === correctPassword) {
-            // تخزين حالة تسجيل الدخول في sessionStorage
+    function login() {
+        const passwordInput = document.getElementById('adminPassword');
+        const errorDiv = document.getElementById('errorMsg');
+        const enteredPassword = passwordInput.value.trim();
+
+        if (enteredPassword === CORRECT_PASSWORD) {
+            // تخزين حالة تسجيل الدخول في الجلسة
             sessionStorage.setItem('adminAuth', 'true');
-            // التوجيه إلى صفحة الأدمن
+            // التوجيه إلى صفحة الإدارة
             window.location.href = 'admin.html';
         } else {
-            document.getElementById('errorMsg').innerText = '❌ كلمة المرور غير صحيحة';
+            errorDiv.style.display = 'block';
+            errorDiv.innerText = '❌ كلمة المرور غير صحيحة. حاول مرة أخرى.';
+            passwordInput.value = '';
+            passwordInput.focus();
         }
     }
 
-    // منع الوصول المباشر إلى admin.html إذا لم يتم تسجيل الدخول
-    // هذا الكود سيتم تنفيذه فقط إذا تم فتح هذه الصفحة كـ login.html
-    // التأكد أن المستخدم ليس في admin.html بالفعل
-    if (window.location.pathname.includes('admin.html')) {
-        if (sessionStorage.getItem('adminAuth') !== 'true') {
-            window.location.href = 'login.html';
+    // إذا حاول المستخدم الضغط على Enter
+    document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            login();
         }
-    }
->>>>>>> f37e9e541e2547bd028442ad40440446256127ad
+    });
 </script>
 </body>
 </html>
