@@ -14,8 +14,10 @@
     <nav class="navbar-desktop">
         <div class="nav-container">
             <div class="logo">
-                <i class="fas fa-feather-alt"></i>
-                <span>إناث</span>
+                <a href="index.html" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: inherit;">
+                    <i class="fas fa-feather-alt"></i>
+                    <span>إناث</span>
+                </a>
             </div>
             <div class="search-box">
                 <i class="fas fa-search"></i>
@@ -48,18 +50,17 @@
         </div>
     </div>
 
-    <!-- شريط الإعلانات -->
+    <!-- حاوية الإعلانات (سكرول أفقي بسيط) -->
     <div class="ads-slider-container">
         <div class="ads-slider" id="adsSlider"></div>
-        <button class="slider-btn prev" id="prevAd"><i class="fas fa-chevron-right"></i></button>
-        <button class="slider-btn next" id="nextAd"><i class="fas fa-chevron-left"></i></button>
-        <div class="slider-dots" id="sliderDots"></div>
+        <button class="slider-btn prev" id="prevAdBtn">❮</button>
+        <button class="slider-btn next" id="nextAdBtn">❯</button>
     </div>
 
-    <!-- 9 فئات -->
+    <!-- شبكة الفئات -->
     <div class="categories-grid" id="categoriesGrid"></div>
 
-    <!-- منطقة المنتجات -->
+    <!-- نافذة عرض المنتجات -->
     <div class="products-section" id="productsSection" style="display: none;">
         <div class="products-header">
             <button class="close-products" id="closeProductsBtn"><i class="fas fa-times"></i></button>
@@ -68,13 +69,13 @@
         <div class="scroll-products" id="productsScroll"></div>
     </div>
 
-    <!-- Modal التواصل -->
+    <!-- مودال التواصل -->
     <div id="contactModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h3>تواصل معنا</h3>
-            <p>البريد الإلكتروني: info@anath.com</p>
-            <p>واتساب: +966 5XXXXXXX</p>
+            <p>البريد الإلكتروني: <a href="mailto:info@anath.com">info@anath.com</a></p>
+            <p>واتساب: <a href="https://wa.me/9665XXXXXXX" target="_blank">+966 5XXXXXXX</a></p>
         </div>
     </div>
 
@@ -87,29 +88,26 @@
             </div>
             <div class="footer-section">
                 <h4>تواصل معنا</h4>
-                <p><i class="fas fa-phone"></i> +966 954879356</p>
-                <p><i class="fas fa-envelope"></i>ahmadkelaui166@gmail.com</p>
-                <p><i class="fab fa-whatsapp"></i> +واتساب: 966 954879356</p>
+                <p><i class="fas fa-phone"></i> <a href="tel:+9665XXXXXXX">+966 5XXXXXXX</a></p>
+                <p><i class="fas fa-envelope"></i> <a href="mailto:info@anath.com">info@anath.com</a></p>
+                <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/9665XXXXXXX" target="_blank">واتساب: +966 5XXXXXXX</a></p>
             </div>
             <div class="footer-section">
                 <h4>تابعنا</h4>
                 <div class="social-icons">
-                    <i class="fab fa-facebook"></i>
-                    <i class="fab fa-instagram"></i>
-                    <i class="fab fa-twitter"></i>
-                    <i class="fab fa-tiktok"></i>
+                    <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+                    <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
                 </div>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>تم تصميم الموقع بواسطة <strong>Ahmad Kllawe</strong> © 2026</p>
+            <p>تم تصميم الموقع بواسطة <strong>Ahmad Kllawe</strong> © 2025</p>
         </div>
     </footer>
 
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-
-    <script src="assets/js/main1.js"></script>
+    <script src="assets/js/main.js"></script>
 </body>
 </html>
