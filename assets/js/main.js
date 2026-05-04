@@ -127,7 +127,7 @@ function showProductsByCategory(catId) {
                 <img src="${p.image}" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=صورة+غير+متوفرة'">
                 <div class="product-info">
                     <div class="product-name">${p.name}</div>
-                    <div><span class="product-price">${p.price} ر.س</span>${p.oldprice ? `<span class="product-oldprice">${p.oldprice} ر.س</span>` : ''}</div>
+                    <div><span class="product-price"> $ ${p.price} </span>${p.oldprice ? `<span class="product-oldprice"> $ ${p.oldprice}  </span>` : ''}</div>
                     <div class="product-desc">${p.desc || ''}</div>
                 </div>
             </div>
@@ -200,7 +200,7 @@ document.getElementById('searchInput')?.addEventListener('input', (e) => {
                 <img src="${p.image}" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=صورة+غير+متوفرة'">
                 <div class="product-info">
                     <div class="product-name">${p.name}</div>
-                    <div class="product-price">${p.price} ر.س</div>
+                    <div class="product-price">${p.price} $ </div>
                 </div>
             </div>
         `).join('');
