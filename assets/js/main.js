@@ -203,88 +203,37 @@ function renderAdsSlider() {
     const activeAds = ads.filter(ad => ad.active);
     const slider = document.getElementById('adsSlider');
     const dotsContainer = document.getElementById('sliderDots');
-    
     if (!slider) return;
     
-    // إذا لم يوجد إعلانات نشطة
     if (activeAds.length === 0) {
-        slider.innerHTML = <div class="ad-slide"><img src="https://via.placeholder.com/1200x400?text=لا+توجد+إعلانات+حالياً" style="height:300px; object-fit:cover;"></div>;
+        slider.innerHTML = `<div class="ad-slide"><img src="https://via.placeholder.com/1200x250?text=لا+توجد+إعلانات"></div>`;
         dotsContainer.innerHTML = '';
-        if (autoSlideInterval) clearInterval(autoSlideInterval);
         return;
     }
     
-    // عرض جميع الإعلانات في السلايدر
-    slider.innerHTML = activeAds.map(ad => 
+    slider.innerHTML = activeAds.map(ad => `
         <div class="ad-slide">
-            <img src="${ad.image}" alt="إعلان" style="width:100%; height:300px; object-fit:cover;">
-            ${ad.text ? <div class="ad-text">${ad.text}</div> : ''}
+            <img src="${ad.image}" alt="إعلان">
+            ${ad.text ? `<div class="ad-text">${ad.text}</div>` : ''}
         </div>
-    ).join('');
+    `).join('');
     
-    // إضافة النقاط (dots) للتنقل
-    dotsContainer.innerHTML = activeAds.map((_, idx) => 
-        <span class="dot ${idx === currentAdIndex ? 'active' : ''}" data-index="${idx}"></span>
-    ).join('');
+    dotsContainer.innerHTML = activeAds.map((_, idx) => `<span class="dot ${idx === currentAdIndex ? 'active' : ''}" data-index="${idx}"></span>`).join('');
     
-    // تحديث موضع السلايدر
     updateSliderPosition();
-    
-    // بدء التشغيل التلقائي
     startAutoSlide();
     
-    // إضافة أحداث النقر على النقاط
     document.querySelectorAll('.dot').forEach(dot => {
-        dot.removeEventListener('click', handleDotClick);
-        dot.addEventListener('click', handleDotClick);
+        dot.addEventListener('click', (e) => {
+            currentAdIndex = parseInt(e.target.dataset.index);
+            updateSliderPosition();
+            updateDots();
+            resetAutoSlide();
+        });
     });
 }
 
-function handleDotClick(e) {
-    currentAdIndex = parseInt(e.target.dataset.index);
-    updateSliderPosition();
-    updateDots();
-    resetAutoSlide();
-}
 
-function updateSliderPosition() {
-    const slider = document.getElementById('adsSlider');
-    if (slider) {
-        slider.style.transform = translateX(-${currentAdIndex * 100}%);
-    }
-}
-
-function updateDots() {
-    document.querySelectorAll('.dot').forEach((dot, idx) => {
-        dot.classList.toggle('active', idx === currentAdIndex);
-    });
-}
-
-function nextAd() {
-    const activeAds = ads.filter(ad => ad.active);
-    if (activeAds.length === 0) return;
-    currentAdIndex = (currentAdIndex + 1) % activeAds.length;
-    updateSliderPosition();
-    updateDots();
-}
-
-function prevAd() {
-    const activeAds = ads.filter(ad => ad.active);
-    if (activeAds.length === 0) return;
-    currentAdIndex = (currentAdIndex - 1 + activeAds.length) % activeAds.length;
-    updateSliderPosition();
-    updateDots();
-}
-
-function startAutoSlide() {
-    if (autoSlideInterval) clearInterval(autoSlideInterval);
-    autoSlideInterval = setInterval(nextAd, 5000);
-}
-
-function resetAutoSlide() {
-    if (autoSlideInterval) clearInterval(autoSlideInterval);
-    startAutoSlide();
-}
 
 function updateSliderPosition() {
     const slider = document.getElementById('adsSlider');
