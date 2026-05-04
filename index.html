@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>أناث - متجر إلكتروني</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <!-- Navbar للشاشات الكبيرة -->
+    <nav class="navbar-desktop">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-feather-alt"></i>
+                <span>أناث</span>
+            </div>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="ابحث عن منتج..." id="searchInput">
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" class="active">الرئيسية</a></li>
+                <li><a href="#" id="contactLink">تواصل معنا</a></li>
+            </ul>
+            <div class="nav-icons">
+                <i class="far fa-heart" id="wishlistIcon"></i>
+                <i class="fas fa-shopping-cart" id="cartIcon"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Navbar للشاشات الصغيرة -->
+    <div class="navbar-mobile">
+        <div class="mobile-nav-item active" data-page="home">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+        </div>
+        <div class="mobile-nav-item" data-page="categories">
+            <i class="fas fa-th-large"></i>
+            <span>الفئات</span>
+        </div>
+        <div class="mobile-nav-item" id="mobileCart">
+            <i class="fas fa-shopping-cart"></i>
+            <span>عربة</span>
+        </div>
+    </div>
+
+    <!-- شريط الإعلانات -->
+    <div class="ads-slider-container">
+        <div class="ads-slider" id="adsSlider"></div>
+        <button class="slider-btn prev" id="prevAd"><i class="fas fa-chevron-right"></i></button>
+        <button class="slider-btn next" id="nextAd"><i class="fas fa-chevron-left"></i></button>
+        <div class="slider-dots" id="sliderDots"></div>
+    </div>
+
+    <!-- 9 فئات -->
+    <div class="categories-grid" id="categoriesGrid"></div>
+
+    <!-- منطقة المنتجات -->
+    <div class="products-section" id="productsSection" style="display: none;">
+        <div class="products-header">
+            <button class="close-products" id="closeProductsBtn"><i class="fas fa-times"></i></button>
+            <h3 id="selectedCategoryTitle"></h3>
+        </div>
+        <div class="scroll-products" id="productsScroll"></div>
+    </div>
+
+    <!-- Modal التواصل -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>تواصل معنا</h3>
+            <p>البريد الإلكتروني: info@anath.com</p>
+            <p>واتساب: +966 5XXXXXXX</p>
+        </div>
+    </div>
+
+    <!-- فوتر -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4><i class="fas fa-feather-alt"></i> أناث</h4>
+                <p>متجر إلكتروني متخصص في منتجات الأناقة والجمال</p>
+            </div>
+            <div class="footer-section">
+                <h4>تواصل معنا</h4>
+                <p><i class="fas fa-phone"></i> +966 5XXXXXXX</p>
+                <p><i class="fas fa-envelope"></i> info@anath.com</p>
+                <p><i class="fab fa-whatsapp"></i> واتساب: +966 5XXXXXXX</p>
+            </div>
+            <div class="footer-section">
+                <h4>تابعنا</h4>
+                <div class="social-icons">
+                    <i class="fab fa-facebook"></i>
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-twitter"></i>
+                    <i class="fab fa-tiktok"></i>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>تم تصميم الموقع بواسطة <strong>Ahmad Kllawe</strong> © 2024</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
