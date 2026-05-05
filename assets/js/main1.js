@@ -491,6 +491,33 @@ function hideLoading() {
     const loader = document.getElementById('globalLoader');
     if (loader) loader.style.display = 'none';
 }
+// ===================== إغلاق نتائج البحث عند الضغط في أي مكان خارجها =====================
+document.addEventListener('click', function(e) {
+    const productsSection = document.getElementById('productsSection');
+    const searchInputDesktop = document.getElementById('searchInputDesktop');
+    const searchInputMobile = document.getElementById('searchInputMobile');
+    const suggestionsDesktop = document.getElementById('suggestionsDesktop');
+    const suggestionsMobile = document.getElementById('suggestionsMobile');
+
+    // إذا كانت نافذة النتائج مفتوحة
+    if (productsSection && productsSection.style.display === 'block') {
+        // تحقق إذا كان الضغط داخل نافذة النتائج أو على أحد حقول البحث أو صناديق الاقتراحات
+        const isClickInsideResults = productsSection.contains(e.target);
+        const isClickOnSearchDesktop = searchInputDesktop && searchInputDesktop.contains(e.target);
+        const isClickOnSearchMobile = searchInputMobile && searchInputMobile.contains(e.target);
+        const isClickOnSuggestionsDesktop = suggestionsDesktop && suggestionsDesktop.contains(e.target);
+        const isClickOnSuggestionsMobile = suggestionsMobile && suggestionsMobile.contains(e.target);
+
+        if (!isClickInsideResults && !isClickOnSearchDesktop && !isClickOnSearchMobile && !isClickOnSuggestionsDesktop && !isClickOnSuggestionsMobile) {
+            // إغلاق النتائج
+            productsSection.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            // اختياري: إخفاء الاقتراحات أيضاً
+            if (suggestionsDesktop) suggestionsDesktop.style.display = 'none';
+            if (suggestionsMobile) suggestionsMobile.style.display = 'none';
+        }
+    }
+});
 
 // ===================== بدء التطبيق =====================
 loadData();
