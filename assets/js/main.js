@@ -209,7 +209,7 @@ document.getElementById('productModal')?.addEventListener('click', (e) => {
     }
 });
 
-// ===================== عرض الإعلانات (كما هي دون تغيير) =====================
+// ===================== عرض الإعلانات (نظام الأزرار والتقليب التلقائي) =====================
 function renderAds() {
     const activeAds = ads.filter(ad => ad.active);
     const slider = document.getElementById('adsSlider');
@@ -227,6 +227,7 @@ function renderAds() {
         return;
     }
 
+    // بناء الإعلانات وإظهار أول إعلان فقط
     slider.innerHTML = '';
     activeAds.forEach((ad, i) => {
         const slideDiv = document.createElement('div');
@@ -238,8 +239,10 @@ function renderAds() {
         slider.appendChild(slideDiv);
     });
     
+    // إعادة تعيين الفهرس
     currentAdIndex = 0;
     
+    // بناء النقاط
     if (dotsContainer && activeAds.length > 1) {
         dotsContainer.innerHTML = '';
         activeAds.forEach((_, i) => {
@@ -253,6 +256,7 @@ function renderAds() {
         dotsContainer.innerHTML = '';
     }
     
+    // إعداد الأزرار
     const prevBtn = document.getElementById('prevAdBtn');
     const nextBtn = document.getElementById('nextAdBtn');
     
@@ -272,6 +276,7 @@ function renderAds() {
         };
     }
     
+    // بدء التقليب التلقائي
     startAutoSlide(activeAds.length);
 }
 
