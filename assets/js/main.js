@@ -136,7 +136,7 @@ function showProductsByCategory(catId) {
                 <img src="${p.image}" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=صورة+غير+متوفرة'">
                 <div class="product-info">
                     <div class="product-name">${p.name}</div>
-                    <div><span class="product-price">${p.price} $</span>${p.oldprice ? `<span class="product-oldprice">${p.oldprice} $</span>` : ''}</div>
+                    <div><span class="product-price">${p.price}$ </span>${p.oldprice ? `<span class="product-oldprice">${p.oldprice}$ </span>` : ''}</div>
                     <div class="product-desc">${p.desc || ''}</div>
                 </div>
             </div>
@@ -178,8 +178,8 @@ function openProductModal(product) {
         <img src="${product.image}" style="width:100%; max-height:250px; object-fit:cover; border-radius:20px; margin-bottom:1rem;">
         <h3 style="color:#b5838d; margin-bottom:0.5rem;">${product.name}</h3>
         <p style="color:#4a4a4a;">${product.desc || ''}</p>
-        <p style="font-size:1.2rem; font-weight:bold; color:#e5989b; margin-top:0.5rem;">${product.price} $</p>
-        ${product.oldprice ? `<p style="text-decoration:line-through; color:#aaa;">${product.oldprice} $</p>` : ''}
+        <p style="font-size:1.2rem; font-weight:bold; color:#e5989b; margin-top:0.5rem;">${product.price}$ </p>
+        ${product.oldprice ? `<p style="text-decoration:line-through; color:#aaa;">${product.oldprice}$ </p>` : ''}
     `;
     
     modal.style.display = 'flex';
