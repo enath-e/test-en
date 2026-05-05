@@ -23,6 +23,7 @@
             <div class="search-box">
                 <i class="fas fa-search"></i>
                 <input type="text" placeholder="ابحث عن منتج..." id="searchInput">
+                <div id="suggestionsDesktop" class="suggestions-box"></div>
             </div>
             <ul class="nav-links">
                 <li><a href="#" class="active">الرئيسية</a></li>
@@ -40,7 +41,6 @@
             <i class="fas fa-home"></i>
             <span>الرئيسية</span>
         </div>
-        <!-- زر البحث في الموبايل -->
         <div class="mobile-nav-item" id="mobileSearchBtn">
             <i class="fas fa-search"></i>
             <span>بحث</span>
@@ -54,11 +54,12 @@
     <!-- نافذة البحث المنبثقة للجوال -->
     <div id="searchModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; justify-content: center; align-items: center; direction: rtl;">
         <div style="background: white; width: 90%; border-radius: 30px; padding: 20px;">
-            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <div style="display: flex; gap: 10px; margin-bottom: 15px; position: relative;">
                 <input type="text" id="mobileSearchInput" placeholder="ابحث عن منتج..." style="flex: 1; padding: 12px; border-radius: 30px; border: 1px solid #ddd; font-size: 1rem;">
-                <button id="mobileSearchSubmit" style="background: #b5838d; color: white; border: none; padding: 0 20px; border-radius: 30px; font-weight: bold;">بحث</button>
+                <button id="mobileSearchSubmit" style="background: #b5838d; color: white; border: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; font-size: 1rem;">بحث</button>
             </div>
-            <button id="closeSearchModal" style="background: #e5989b; color: white; border: none; padding: 8px; width: 100%; border-radius: 30px; font-size: 0.8rem;">إلغاء</button>
+            <div id="mobileSuggestions" class="suggestions-box"></div>
+            <button id="closeSearchModal" style="background: #e5989b; color: white; border: none; padding: 6px 12px; border-radius: 30px; font-size: 0.7rem; width: auto; margin-top: 10px;">إلغاء</button>
         </div>
     </div>
 
