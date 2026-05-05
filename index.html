@@ -22,7 +22,7 @@
             </div>
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" placeholder="ابحث عن منتج..." id="searchInput">
+                <input type="text" placeholder="ابحث عن منتج..." id="searchInputDesktop">
                 <div id="suggestionsDesktop" class="suggestions-box"></div>
             </div>
             <ul class="nav-links">
@@ -35,31 +35,29 @@
         </div>
     </nav>
 
-    <!-- Navbar Mobile -->
+    <!-- شريط بحث للجوال (يظهر فقط في الشاشات الصغيرة) -->
+    <div class="mobile-search-bar">
+        <div class="mobile-search-container">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInputMobile" placeholder="ابحث عن منتج...">
+            <button id="clearMobileSearch" class="clear-search-btn">✕</button>
+        </div>
+        <div id="suggestionsMobile" class="suggestions-box mobile-suggestions"></div>
+    </div>
+
+    <!-- Navbar Mobile (أيقونات سفلى) -->
     <div class="navbar-mobile">
         <div class="mobile-nav-item active" data-page="home">
             <i class="fas fa-home"></i>
             <span>الرئيسية</span>
         </div>
-        <div class="mobile-nav-item" id="mobileSearchBtn">
-            <i class="fas fa-search"></i>
-            <span>بحث</span>
-        </div>
         <div class="mobile-nav-item" data-page="categories">
             <i class="fas fa-th-large"></i>
             <span>الفئات</span>
         </div>
-    </div>
-
-    <!-- نافذة البحث المنبثقة للجوال -->
-    <div id="searchModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; justify-content: center; align-items: center; direction: rtl;">
-        <div style="background: white; width: 90%; border-radius: 30px; padding: 20px;">
-            <div style="display: flex; gap: 10px; margin-bottom: 15px; position: relative;">
-                <input type="text" id="mobileSearchInput" placeholder="ابحث عن منتج..." style="flex: 1; padding: 12px; border-radius: 30px; border: 1px solid #ddd; font-size: 1rem;">
-                <button id="mobileSearchSubmit" style="background: #b5838d; color: white; border: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; font-size: 1rem;">بحث</button>
-            </div>
-            <div id="mobileSuggestions" class="suggestions-box"></div>
-            <button id="closeSearchModal" style="background: #e5989b; color: white; border: none; padding: 6px 12px; border-radius: 30px; font-size: 0.7rem; width: auto; margin-top: 10px;">إلغاء</button>
+        <div class="mobile-nav-item" data-page="contact">
+            <i class="fas fa-envelope"></i>
+            <span>اتصال</span>
         </div>
     </div>
 
@@ -135,6 +133,6 @@
 
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="assets/js/main1.js"></script>
 </body>
 </html>

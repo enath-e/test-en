@@ -209,7 +209,7 @@ document.getElementById('productModal')?.addEventListener('click', (e) => {
     }
 });
 
-// ===================== عرض الإعلانات (كما هي) =====================
+// ===================== عرض الإعلانات =====================
 function renderAds() {
     const activeAds = ads.filter(ad => ad.active);
     const slider = document.getElementById('adsSlider');
@@ -309,7 +309,7 @@ function resetAutoSlide(total) {
     }
 }
 
-// ===================== البحث مع الاقتراحات وإغلاق النافذة =====================
+// ===================== البحث المدمج (للكمبيوتر والجوال) =====================
 
 // دالة عرض الاقتراحات
 function showSuggestions(inputElement, suggestionsContainer, keyword) {
@@ -331,9 +331,10 @@ function showSuggestions(inputElement, suggestionsContainer, keyword) {
             inputElement.value = selectedName;
             suggestionsContainer.style.display = 'none';
             performSearch(selectedName);
-            // إذا كان الجوال، أغلق النافذة بعد البحث
-            if (inputElement.id === 'mobileSearchInput') {
-                document.getElementById('searchModal').style.display = 'none';
+            // إخفاء زر الإلغاء إذا كان الجوال
+            if (inputElement.id === 'searchInputMobile') {
+                const clearBtn = document.getElementById('clearMobileSearch');
+                if (clearBtn) clearBtn.style.display = selectedName ? 'block' : 'none';
             }
         };
     });
@@ -378,8 +379,8 @@ function performSearch(keyword) {
     });
 }
 
-// ========== بحث سطح المكتب (كمبيوتر) ==========
-const desktopInput = document.getElementById('searchInput');
+// ========== بحث سطح المكتب ==========
+const desktopInput = document.getElementById('searchInputDesktop');
 const desktopSuggestions = document.getElementById('suggestionsDesktop');
 if (desktopInput) {
     desktopInput.addEventListener('input', (e) => {
@@ -392,7 +393,6 @@ if (desktopInput) {
             performSearch(val);
         }
     });
-    // إخفاء الاقتراحات عند النقر خارجها
     document.addEventListener('click', (e) => {
         if (!desktopInput.contains(e.target) && !desktopSuggestions.contains(e.target)) {
             desktopSuggestions.style.display = 'none';
@@ -400,75 +400,40 @@ if (desktopInput) {
     });
 }
 
-// ========== بحث الجوال (نافذة منبثقة) ==========
-const mobileBtn = document.getElementById('mobileSearchBtn');
-const searchModal = document.getElementById('searchModal');
-const mobileInput = document.getElementById('mobileSearchInput');
-const mobileSubmit = document.getElementById('mobileSearchSubmit');
-const closeModalBtn = document.getElementById('closeSearchModal');
-const mobileSuggestionsDiv = document.getElementById('mobileSuggestions');
-
-if (mobileBtn && searchModal) {
-    mobileBtn.addEventListener('click', () => {
-        searchModal.style.display = 'flex';
-        if (mobileInput) mobileInput.focus();
-    });
-}
+// ========== بحث الجوال (شريط البحث العلوي) ==========
+const mobileInput = document.getElementById('searchInputMobile');
+const mobileSuggestions = document.getElementById('suggestionsMobile');
+const clearMobileBtn = document.getElementById('clearMobileSearch');
 
 if (mobileInput) {
     mobileInput.addEventListener('input', (e) => {
         const val = e.target.value;
-        showSuggestions(mobileInput, mobileSuggestionsDiv, val);
-        if (val.trim() !== '') {
-            performSearch(val);
+        showSuggestions(mobileInput, mobileSuggestions, val);
+        if (clearMobileBtn) clearMobileBtn.style.display = val ? 'block' : 'none';
+        if (val.trim() === '') {
+            document.getElementById('productsSection').style.display = 'none';
+            document.body.style.overflow = 'auto';
         } else {
+            performSearch(val);
+        }
+    });
+    // إخفاء الاقتراحات عند النقر خارج الحقل
+    document.addEventListener('click', (e) => {
+        if (!mobileInput.contains(e.target) && !mobileSuggestions.contains(e.target)) {
+            mobileSuggestions.style.display = 'none';
+        }
+    });
+    // زر مسح النص
+    if (clearMobileBtn) {
+        clearMobileBtn.addEventListener('click', () => {
+            mobileInput.value = '';
+            mobileSuggestions.style.display = 'none';
+            performSearch('');
+            clearMobileBtn.style.display = 'none';
             document.getElementById('productsSection').style.display = 'none';
             document.body.style.overflow = 'auto';
-        }
-    });
-}
-
-if (mobileSubmit && searchModal) {
-    mobileSubmit.addEventListener('click', () => {
-        const keyword = mobileInput.value.trim();
-        if (keyword) {
-            performSearch(keyword);
-            searchModal.style.display = 'none';
-            if (mobileInput) mobileInput.value = '';
-            mobileSuggestionsDiv.style.display = 'none';
-        }
-    });
-}
-
-if (closeModalBtn && searchModal) {
-    closeModalBtn.addEventListener('click', () => {
-        searchModal.style.display = 'none';
-        if (mobileInput) mobileInput.value = '';
-        mobileSuggestionsDiv.style.display = 'none';
-        document.getElementById('productsSection').style.display = 'none';
-        document.body.style.overflow = 'auto';
-    });
-}
-
-// إغلاق النافذة عند الضغط خارجها (على الخلفية السوداء)
-if (searchModal) {
-    searchModal.addEventListener('click', (e) => {
-        if (e.target === searchModal) {
-            searchModal.style.display = 'none';
-            if (mobileInput) mobileInput.value = '';
-            mobileSuggestionsDiv.style.display = 'none';
-            document.getElementById('productsSection').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-    });
-}
-
-if (mobileInput) {
-    mobileInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            mobileSubmit?.click();
-        }
-    });
+        });
+    }
 }
 
 // ===================== تنقل الموبايل =====================
@@ -482,6 +447,9 @@ document.querySelectorAll('.mobile-nav-item').forEach(item => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } else if (page === 'categories') {
             document.getElementById('categoriesGrid').scrollIntoView({ behavior: 'smooth' });
+        } else if (page === 'contact') {
+            const contactModal = document.getElementById('contactModal');
+            if (contactModal) contactModal.style.display = 'flex';
         }
         document.querySelectorAll('.mobile-nav-item').forEach(i => i.classList.remove('active'));
         item.classList.add('active');

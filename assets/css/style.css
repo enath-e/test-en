@@ -633,3 +633,85 @@ body {
         grid-template-columns: repeat(3, 1fr);
     }
 }
+
+/* إضافة أنماط شريط البحث للجوال */
+.mobile-search-bar {
+    display: none;
+    padding: 10px 15px;
+    background: white;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+.mobile-search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f9f9f9;
+    border-radius: 50px;
+    border: 1px solid #ddd;
+    padding: 5px 15px;
+}
+
+.mobile-search-container i {
+    color: #aaa;
+    font-size: 1rem;
+}
+
+.mobile-search-container input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 10px 0;
+    font-size: 1rem;
+    font-family: 'Tajawal', sans-serif;
+    outline: none;
+}
+
+.clear-search-btn {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 0 5px;
+    display: none;
+}
+
+.clear-search-btn:hover {
+    color: #e5989b;
+}
+
+.mobile-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+    margin-top: 5px;
+    display: none;
+}
+
+/* للشاشات الصغيرة */
+@media (max-width: 768px) {
+    .navbar-desktop {
+        display: none;
+    }
+    .mobile-search-bar {
+        display: block;
+    }
+    .navbar-mobile {
+        display: flex;
+    }
+    /* تعديلات أخرى موجودة سابقاً */
+}
+
+/* باقي الأنماط (الإعلانات، الفئات، المنتجات، إلخ) تبقى كما هي دون تغيير */
+/* تأكد من نسخ باقي الـ CSS من ملفك القديم الذي يعمل بشكل جيد */
