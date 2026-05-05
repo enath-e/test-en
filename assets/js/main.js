@@ -209,7 +209,7 @@ document.getElementById('productModal')?.addEventListener('click', (e) => {
     }
 });
 
-// ===================== عرض الإعلانات (نظام الأزرار والتقليب التلقائي) =====================
+// ===================== عرض الإعلانات (كما هي دون تغيير) =====================
 function renderAds() {
     const activeAds = ads.filter(ad => ad.active);
     const slider = document.getElementById('adsSlider');
@@ -227,7 +227,6 @@ function renderAds() {
         return;
     }
 
-    // بناء الإعلانات وإظهار أول إعلان فقط
     slider.innerHTML = '';
     activeAds.forEach((ad, i) => {
         const slideDiv = document.createElement('div');
@@ -239,10 +238,8 @@ function renderAds() {
         slider.appendChild(slideDiv);
     });
     
-    // إعادة تعيين الفهرس
     currentAdIndex = 0;
     
-    // بناء النقاط
     if (dotsContainer && activeAds.length > 1) {
         dotsContainer.innerHTML = '';
         activeAds.forEach((_, i) => {
@@ -256,7 +253,6 @@ function renderAds() {
         dotsContainer.innerHTML = '';
     }
     
-    // إعداد الأزرار
     const prevBtn = document.getElementById('prevAdBtn');
     const nextBtn = document.getElementById('nextAdBtn');
     
@@ -276,7 +272,6 @@ function renderAds() {
         };
     }
     
-    // بدء التقليب التلقائي
     startAutoSlide(activeAds.length);
 }
 
@@ -314,19 +309,22 @@ function resetAutoSlide(total) {
     }
 }
 
-// ===================== البحث =====================
+// ===================== البحث الجديد والمطور (مع إغلاق النافذة عند الضغط خارجها) =====================
 function performSearch(keyword) {
     if (!keyword.trim()) {
         document.getElementById('productsSection').style.display = 'none';
         document.body.style.overflow = 'auto';
         return;
     }
+    
     const filtered = products.filter(p => p.name.toLowerCase().includes(keyword.toLowerCase()) && p.active);
     const title = document.getElementById('selectedCategoryTitle');
     const scrollDiv = document.getElementById('productsScroll');
-    title.innerHTML = 'نتائج البحث';
+
+    title.innerHTML = `<i class="fas fa-search"></i> نتائج البحث عن "${keyword}"`;
+
     if (filtered.length === 0) {
-        scrollDiv.innerHTML = '<div style="padding:20px; text-align:center;">لا توجد نتائج</div>';
+        scrollDiv.innerHTML = '<div style="padding:20px; text-align:center; color:#888;">😞 لا توجد منتجات تطابق بحثك</div>';
     } else {
         scrollDiv.innerHTML = filtered.map(p => `
             <div class="product-card" data-product-id="${p.id}">
@@ -351,15 +349,73 @@ function performSearch(keyword) {
     });
 }
 
-document.getElementById('searchInput')?.addEventListener('input', (e) => {
-    performSearch(e.target.value);
-});
+// --- بحث الكمبيوتر (فوري) ---
+const desktopSearch = document.getElementById('searchInput');
+if (desktopSearch) {
+    desktopSearch.addEventListener('input', (e) => {
+        performSearch(e.target.value);
+    });
+}
 
-document.getElementById('mobileSearchBtn')?.addEventListener('click', () => {
-    const searchInput = document.getElementById('searchInput');
-    searchInput.focus();
-    searchInput.scrollIntoView({ behavior: 'smooth' });
-});
+// --- بحث الجوال (نافذة منبثقة) ---
+const mobileBtn = document.getElementById('mobileSearchBtn');
+const searchModal = document.getElementById('searchModal');
+const mobileInput = document.getElementById('mobileSearchInput');
+const mobileSubmit = document.getElementById('mobileSearchSubmit');
+const closeModalBtn = document.getElementById('closeSearchModal');
+
+if (mobileBtn && searchModal) {
+    mobileBtn.addEventListener('click', () => {
+        searchModal.style.display = 'flex';
+        if (mobileInput) mobileInput.focus();
+    });
+}
+
+if (mobileInput) {
+    mobileInput.addEventListener('input', (e) => {
+        performSearch(e.target.value);
+    });
+}
+
+if (mobileSubmit && searchModal) {
+    mobileSubmit.addEventListener('click', () => {
+        const keyword = mobileInput.value.trim();
+        if (keyword) {
+            performSearch(keyword);
+            searchModal.style.display = 'none';
+            if (mobileInput) mobileInput.value = '';
+        }
+    });
+}
+
+if (closeModalBtn && searchModal) {
+    closeModalBtn.addEventListener('click', () => {
+        searchModal.style.display = 'none';
+        if (mobileInput) mobileInput.value = '';
+        document.getElementById('productsSection').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    });
+}
+
+// إغلاق النافذة عند الضغط خارجها
+if (searchModal) {
+    searchModal.addEventListener('click', (e) => {
+        if (e.target === searchModal) {
+            searchModal.style.display = 'none';
+            if (mobileInput) mobileInput.value = '';
+            document.getElementById('productsSection').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
+}
+
+if (mobileInput) {
+    mobileInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            mobileSubmit?.click();
+        }
+    });
+}
 
 // ===================== تنقل الموبايل =====================
 document.querySelectorAll('.mobile-nav-item').forEach(item => {
