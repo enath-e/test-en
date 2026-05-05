@@ -1,6 +1,6 @@
 // ===================== إعدادات Firebase =====================
 const firebaseConfig = {
-    apiKey: "AIzaSyD6CcJDUixgCQxe_al_j2aEiinUQ2X05s",
+    apiKey: "AIzaSyD6CcJDUiXgCQxe_aL_j2aEi1nuQ2x2o5s",
     authDomain: "enath-7d5e8.firebaseapp.com",
     databaseURL: "https://enath-7d5e8-default-rtdb.firebaseio.com",
     projectId: "enath-7d5e8",
@@ -17,6 +17,8 @@ let categories = [];
 let products = [];
 let ads = [];
 let currentProduct = null;
+let currentAdIndex = 0;
+let autoSlideInterval = null;
 
 // ===================== تحميل البيانات =====================
 async function loadData() {
@@ -127,7 +129,7 @@ function showProductsByCategory(catId) {
                 <img src="${p.image}" class="product-img" onerror="this.src='https://via.placeholder.com/200x200?text=صورة+غير+متوفرة'">
                 <div class="product-info">
                     <div class="product-name">${p.name}</div>
-                    <div><span class="product-price">${p.price}$</span>  ${p.oldprice ? `<span class="product-oldprice">${p.oldprice}$</span>` : ''}</div>
+                    <div><span class="product-price">${p.price} $</span>${p.oldprice ? `<span class="product-oldprice">${p.oldprice} $</span>` : ''}</div>
                     <div class="product-desc">${p.desc || ''}</div>
                 </div>
             </div>
@@ -164,9 +166,9 @@ function openProductModal(product) {
     detailsDiv.innerHTML = `
         <img src="${product.image}" style="width:100%; max-height:250px; object-fit:cover; border-radius:20px; margin-bottom:1rem;">
         <h3 style="color:#b5838d; margin-bottom:0.5rem;">${product.name}</h3>
-        <p style="color:#4a4a4a; margin-bottom:0.5rem;">${product.desc || ''}</p>
-        <p style="font-size:1.2rem; font-weight:bold; color:#e5989b;">${product.price} $</p>
-        ${product.oldprice ? `<p style="text-decoration:line-through; color:#aaa;">$ {product.oldprice} $ </p>` : ''}
+        <p style="color:#4a4a4a;">${product.desc || ''}</p>
+        <p style="font-size:1.2rem; font-weight:bold; color:#e5989b; margin-top:0.5rem;">${product.price} $</p>
+        ${product.oldprice ? `<p style="text-decoration:line-through; color:#aaa;">${product.oldprice} $</p>` : ''}
     `;
     
     modal.style.display = 'flex';
@@ -182,15 +184,13 @@ document.getElementById('whatsappBuyBtn')?.addEventListener('click', () => {
     if (!currentProduct) return;
     const phoneNumber = "9665XXXXXXX";
     const message = `مرحباً، أريد شراء المنتج التالي:\n\nالمنتج: ${currentProduct.name}\nالسعر: ${currentProduct.price} $\nالرابط: ${window.location.href}`;
-    const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
+    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
 });
 
 document.getElementById('qrcodeBuyBtn')?.addEventListener('click', () => {
     const qrcodeContainer = document.getElementById('qrcodeContainer');
     qrcodeContainer.style.display = 'block';
     qrcodeContainer.innerHTML = '';
-    
     const paymentUrl = `https://wa.me/9665XXXXXXX?text=طلب شراء: ${currentProduct.name}`;
     new QRCode(qrcodeContainer, {
         text: paymentUrl,
@@ -209,38 +209,112 @@ document.getElementById('productModal')?.addEventListener('click', (e) => {
     }
 });
 
-// ===================== عرض الإعلانات =====================
+// ===================== عرض الإعلانات (نظام الأزرار والتقليب التلقائي) =====================
 function renderAds() {
     const activeAds = ads.filter(ad => ad.active);
     const slider = document.getElementById('adsSlider');
+    const dotsContainer = document.getElementById('sliderDots');
     if (!slider) return;
 
+    if (autoSlideInterval) {
+        clearInterval(autoSlideInterval);
+        autoSlideInterval = null;
+    }
+
     if (activeAds.length === 0) {
-        slider.innerHTML = `<div class="ad-slide"><div style="background:#eee; text-align:center; padding:80px;">لا توجد إعلانات</div></div>`;
+        slider.innerHTML = `<div class="ad-slide active"><div style="background:#eee; text-align:center; padding:80px;">لا توجد إعلانات</div></div>`;
+        if (dotsContainer) dotsContainer.innerHTML = '';
         return;
     }
 
-    slider.innerHTML = activeAds.map(ad => `
-        <div class="ad-slide">
+    // بناء الإعلانات وإظهار أول إعلان فقط
+    slider.innerHTML = '';
+    activeAds.forEach((ad, i) => {
+        const slideDiv = document.createElement('div');
+        slideDiv.className = 'ad-slide' + (i === 0 ? ' active' : '');
+        slideDiv.innerHTML = `
             <img src="${ad.image}" onerror="this.src='https://via.placeholder.com/1200x400?text=صورة+غير+متوفرة'">
             ${ad.text ? `<div class="ad-text">${ad.text}</div>` : ''}
-        </div>
-    `).join('');
+        `;
+        slider.appendChild(slideDiv);
+    });
     
+    // إعادة تعيين الفهرس
+    currentAdIndex = 0;
+    
+    // بناء النقاط
+    if (dotsContainer && activeAds.length > 1) {
+        dotsContainer.innerHTML = '';
+        activeAds.forEach((_, i) => {
+            const dot = document.createElement('span');
+            dot.className = 'dot' + (i === 0 ? ' active' : '');
+            dot.setAttribute('data-index', i);
+            dot.onclick = () => goToAd(i);
+            dotsContainer.appendChild(dot);
+        });
+    } else if (dotsContainer) {
+        dotsContainer.innerHTML = '';
+    }
+    
+    // إعداد الأزرار
     const prevBtn = document.getElementById('prevAdBtn');
     const nextBtn = document.getElementById('nextAdBtn');
+    
     if (prevBtn && nextBtn && activeAds.length > 1) {
         const newPrev = prevBtn.cloneNode(true);
         const newNext = nextBtn.cloneNode(true);
-        if (prevBtn.parentNode) prevBtn.parentNode.replaceChild(newPrev, prevBtn);
-        if (nextBtn.parentNode) nextBtn.parentNode.replaceChild(newNext, nextBtn);
+        prevBtn.parentNode?.replaceChild(newPrev, prevBtn);
+        nextBtn.parentNode?.replaceChild(newNext, nextBtn);
         
-        newPrev.onclick = () => { slider.scrollBy({ left: -slider.clientWidth, behavior: 'smooth' }); };
-        newNext.onclick = () => { slider.scrollBy({ left: slider.clientWidth, behavior: 'smooth' }); };
+        newPrev.onclick = () => {
+            goToAd((currentAdIndex - 1 + activeAds.length) % activeAds.length);
+            resetAutoSlide(activeAds.length);
+        };
+        newNext.onclick = () => {
+            goToAd((currentAdIndex + 1) % activeAds.length);
+            resetAutoSlide(activeAds.length);
+        };
+    }
+    
+    // بدء التقليب التلقائي
+    startAutoSlide(activeAds.length);
+}
+
+function goToAd(index) {
+    const slides = document.querySelectorAll('#adsSlider .ad-slide');
+    const dots = document.querySelectorAll('#sliderDots .dot');
+    if (!slides.length) return;
+    
+    slides.forEach(slide => slide.classList.remove('active'));
+    slides[index].classList.add('active');
+    
+    if (dots.length) {
+        dots.forEach(dot => dot.classList.remove('active'));
+        dots[index].classList.add('active');
+    }
+    
+    currentAdIndex = index;
+}
+
+function startAutoSlide(total) {
+    if (total <= 1) return;
+    if (autoSlideInterval) clearInterval(autoSlideInterval);
+    
+    autoSlideInterval = setInterval(() => {
+        const activeCount = ads.filter(ad => ad.active).length;
+        if (activeCount <= 1) return;
+        goToAd((currentAdIndex + 1) % activeCount);
+    }, 5000);
+}
+
+function resetAutoSlide(total) {
+    if (autoSlideInterval) {
+        clearInterval(autoSlideInterval);
+        startAutoSlide(total);
     }
 }
 
-// ===================== البحث (للكمبيوتر والجوال) =====================
+// ===================== البحث =====================
 function performSearch(keyword) {
     if (!keyword.trim()) {
         document.getElementById('productsSection').style.display = 'none';
@@ -277,36 +351,14 @@ function performSearch(keyword) {
     });
 }
 
-// بحث شاشة الكمبيوتر
 document.getElementById('searchInput')?.addEventListener('input', (e) => {
     performSearch(e.target.value);
 });
 
-// بحث شاشة الهاتف - زر مخصص (يعمل الآن)
 document.getElementById('mobileSearchBtn')?.addEventListener('click', () => {
-    // إنشاء نافذة منبثقة للبحث على الجوال
-    const searchModal = document.createElement('div');
-    searchModal.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10000; display:flex; justify-content:center; align-items:center; direction:rtl;';
-    searchModal.innerHTML = `
-        <div style="background:white; width:90%; border-radius:30px; padding:20px;">
-            <div style="display:flex; gap:10px; margin-bottom:15px;">
-                <input type="text" id="mobileSearchInput" placeholder="ابحث عن منتج..." style="flex:1; padding:12px; border-radius:30px; border:1px solid #ddd; font-family:'Tajawal'">
-                <button id="mobileSearchSubmit" style="background:#b5838d; color:white; border:none; padding:0 20px; border-radius:30px;">بحث</button>
-            </div>
-            <button id="closeSearchModal" style="background:#e5989b; color:white; border:none; padding:8px; width:100%; border-radius:30px;">إلغاء</button>
-        </div>
-    `;
-    document.body.appendChild(searchModal);
-    
-    document.getElementById('mobileSearchSubmit').onclick = () => {
-        const keyword = document.getElementById('mobileSearchInput').value.trim();
-        if (keyword) {
-            performSearch(keyword);
-            searchModal.remove();
-        }
-    };
-    document.getElementById('closeSearchModal').onclick = () => searchModal.remove();
-    document.getElementById('mobileSearchInput').focus();
+    const searchInput = document.getElementById('searchInput');
+    searchInput.focus();
+    searchInput.scrollIntoView({ behavior: 'smooth' });
 });
 
 // ===================== تنقل الموبايل =====================
@@ -341,7 +393,6 @@ window.addEventListener('click', (e) => {
     if (e.target === modal) modal.style.display = 'none';
 });
 
-// ===================== أيقونة المفضلة =====================
 document.getElementById('wishlistIcon')?.addEventListener('click', () => alert('المفضلة قريباً'));
 
 // ===================== شاشة التحميل =====================
@@ -363,5 +414,5 @@ function hideLoading() {
     if (loader) loader.style.display = 'none';
 }
 
-// تشغيل التطبيق
+// ===================== بدء التطبيق =====================
 loadData();
