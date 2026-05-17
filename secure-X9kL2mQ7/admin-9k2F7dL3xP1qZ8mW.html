@@ -8,128 +8,38 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Tajawal', sans-serif;
-            background: #f4f1ea;
-            padding: 1rem;
-            direction: rtl;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 30px;
-            padding: 1rem;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-        }
+        body { font-family: 'Tajawal', sans-serif; background: #f4f1ea; padding: 1rem; direction: rtl; }
+        .container { max-width: 800px; margin: 0 auto; background: white; border-radius: 30px; padding: 1rem; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
         h1 { color: #b5838d; font-size: 1.6rem; margin-bottom: 0.5rem; text-align: center; }
-        .section {
-            background: #fff;
-            border: 1px solid #eee;
-            border-radius: 20px;
-            margin-bottom: 1rem;
-            overflow: hidden;
-        }
-        .section-header {
-            background: #fef5f0;
-            padding: 0.8rem 1rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: bold;
-        }
-        .section-content {
-            padding: 0 1rem 1rem;
-            display: none;
-            border-top: 1px solid #eee;
-        }
+        .section { background: #fff; border: 1px solid #eee; border-radius: 20px; margin-bottom: 1rem; overflow: hidden; }
+        .section-header { background: #fef5f0; padding: 0.8rem 1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
+        .section-content { padding: 0 1rem 1rem; display: none; border-top: 1px solid #eee; }
         .section-content.open { display: block; }
-        .category-item {
-            border: 1px solid #eee;
-            border-radius: 20px;
-            margin-bottom: 1rem;
-        }
-        .category-title {
-            background: #f9f9f9;
-            padding: 0.8rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .category-products {
-            padding: 0.8rem;
-            display: none;
-            border-top: 1px solid #eee;
-        }
+        .category-item { border: 1px solid #eee; border-radius: 20px; margin-bottom: 1rem; }
+        .category-title { background: #f9f9f9; padding: 0.8rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .category-products { padding: 0.8rem; display: none; border-top: 1px solid #eee; }
         .category-products.open { display: block; }
-        .product-item {
-            background: white;
-            border: 1px solid #eee;
-            border-radius: 15px;
-            padding: 0.8rem;
-            margin-bottom: 0.8rem;
-        }
+        .product-item { background: white; border: 1px solid #eee; border-radius: 15px; padding: 0.8rem; margin-bottom: 0.8rem; }
         .flex-between { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
-        button {
-            background: #b5838d;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            margin: 2px;
-        }
+        button { background: #b5838d; color: white; border: none; padding: 8px 16px; border-radius: 30px; cursor: pointer; font-size: 0.85rem; margin: 2px; transition: 0.2s; }
         button.danger { background: #e5989b; }
         button.success { background: #a3b18a; }
-        input, textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            font-family: inherit;
-            margin-bottom: 8px;
-        }
-        .badge {
-            font-size: 0.7rem;
-            padding: 2px 6px;
-            border-radius: 20px;
-            background: #eee;
-        }
+        button:disabled { opacity: 0.6; cursor: not-allowed; }
+        input, textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 20px; font-family: inherit; margin-bottom: 8px; }
+        input[type="file"] { padding: 5px; background: #f9f9f9; }
+        .badge { font-size: 0.7rem; padding: 2px 6px; border-radius: 20px; background: #eee; }
         .badge-active { background: #a3b18a; color: white; }
         .badge-inactive { background: #e5989b; color: white; }
-        .add-product-form {
-            background: #f9f9f9;
-            padding: 0.8rem;
-            border-radius: 15px;
-            margin-bottom: 1rem;
-        }
+        .add-product-form { background: #f9f9f9; padding: 0.8rem; border-radius: 15px; margin-bottom: 1rem; }
         .logout-btn { background: #e5989b; width: auto; padding: 6px 18px; font-size: 0.85rem; margin-bottom: 0.5rem; }
-        /* تنسيق البحث في جميع المنتجات */
-        .search-in-products {
-            display: flex;
-            align-items: center;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 40px;
-            padding: 5px 15px;
-            margin-bottom: 1rem;
-        }
-        .search-in-products i {
-            color: #aaa;
-            margin-left: 8px;
-        }
-        .search-in-products input {
-            border: none;
-            margin: 0;
-            padding: 8px 0;
-            background: transparent;
-        }
-        .search-in-products input:focus {
-            outline: none;
-        }
+        .search-in-products { display: flex; align-items: center; background: #fff; border: 1px solid #ddd; border-radius: 40px; padding: 5px 15px; margin-bottom: 1rem; }
+        .search-in-products i { color: #aaa; margin-left: 8px; }
+        .search-in-products input { border: none; margin: 0; padding: 8px 0; background: transparent; }
+        .search-in-products input:focus { outline: none; }
+        .loader-small { display: inline-block; width: 16px; height: 16px; border: 2px solid #fff; border-top-color: #b5838d; border-radius: 50%; animation: spin 0.6s linear infinite; margin-right: 8px; vertical-align: middle; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .upload-group { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+        .upload-group button { margin: 0; }
     </style>
 </head>
 <body>
@@ -148,9 +58,12 @@
         <div id="adsContent" class="section-content">
             <div class="add-product-form">
                 <h4>➕ إضافة إعلان جديد</h4>
-                <input type="text" id="newAdImage" placeholder="رابط الصورة">
-                <input type="text" id="newAdText" placeholder="نص الإعلان">
-                <button id="addAdBtn">إضافة</button>
+                <div class="upload-group">
+                    <input type="file" id="newAdImageFile" accept="image/*">
+                    <button id="addAdBtn">إضافة إعلان</button>
+                </div>
+                <input type="text" id="newAdText" placeholder="نص الإعلان (اختياري)">
+                <div id="newAdLoader" style="display:none; margin-top:5px;"><span class="loader-small"></span> جاري رفع الصورة...</div>
             </div>
             <div id="adsList"></div>
         </div>
@@ -167,13 +80,16 @@
             <div class="add-product-form">
                 <h4>➕ إضافة فئة جديدة</h4>
                 <input type="text" id="newCatName" placeholder="اسم الفئة">
-                <input type="text" id="newCatImage" placeholder="رابط الصورة" value="https://cdn-icons-png.flaticon.com/512/1077/1077035.png">
-                <button id="addCategoryBtn">إضافة فئة</button>
+                <div class="upload-group">
+                    <input type="file" id="newCatImageFile" accept="image/*">
+                    <button id="addCategoryBtn">إضافة فئة</button>
+                </div>
+                <div id="newCatLoader" style="display:none; margin-top:5px;"><span class="loader-small"></span> جاري رفع الصورة...</div>
             </div>
         </div>
     </div>
 
-    <!-- قسم جميع المنتجات مع بحث -->
+    <!-- قسم جميع المنتجات -->
     <div class="section">
         <div class="section-header" onclick="toggleSection('allProductsContent')">
             <span><i class="fas fa-boxes"></i> جميع المنتجات</span>
@@ -182,7 +98,7 @@
         <div id="allProductsContent" class="section-content">
             <div class="search-in-products">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchAllProducts" placeholder="ابحث عن منتج بالاسم..." autocomplete="off">
+                <input type="text" id="searchAllProducts" placeholder="ابحث عن منتج بالاسم...">
             </div>
             <div id="productsList"></div>
         </div>
@@ -193,6 +109,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 <script>
+    // ==================== إعدادات Firebase (لا تغيرها) ====================
     const firebaseConfig = {
         apiKey: "AIzaSyD6CcJDUiXgCQxe_aL_j2aEi1nuQ2X2o5s",
         authDomain: "enath-7d5e8.firebaseapp.com",
@@ -218,8 +135,30 @@
     });
     document.getElementById('logoutBtn').onclick = () => auth.signOut().then(() => window.location.href = 'login-9k2F7dL3xP1qZ8mW.html');
 
+  
+    const CLOUDINARY_CLOUD_NAME = "dh6j108wj"; 
+    const CLOUDINARY_UPLOAD_PRESET = "enath-shop"; 
+
+    // دالة رفع الصورة إلى Cloudinary
+    async function uploadImageToCloudinary(file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+        const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/upload`, {
+            method: "POST",
+            body: formData
+        });
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error?.message || "فشل رفع الصورة");
+        }
+        const data = await response.json();
+        return data.secure_url;
+    }
+
+    // ==================== المتغيرات والدوال الأساسية ====================
     let ads = [], categories = [], products = [];
-    let lastSearchText = ""; // للحفاظ على نص البحث بعد تحديث المنتجات
+    let lastSearchText = "";
 
     async function loadData() {
         const adsSnap = await db.ref('ads').once('value');
@@ -229,129 +168,150 @@
         const prodSnap = await db.ref('products').once('value');
         products = prodSnap.val() ? Object.keys(prodSnap.val()).map(k => ({ id: k, ...prodSnap.val()[k] })) : [];
         renderAll();
-        // بعد تحميل المنتجات، نربط حدث البحث
         bindSearchEvent();
     }
 
     async function saveAll() {
-        const adsObj = {}; ads.forEach(a => { adsObj[a.id] = { image: a.image, text: a.text, active: a.active }; });
+        const adsObj = {}; ads.forEach(a => { adsObj[a.id] = { image: a.image, text: a.text || '', active: a.active }; });
         await db.ref('ads').set(adsObj);
         const catsObj = {}; categories.forEach(c => { catsObj[c.id] = { name: c.name, image: c.image, active: c.active }; });
         await db.ref('categories').set(catsObj);
         const prodsObj = {}; products.forEach(p => { prodsObj[p.id] = { name: p.name, price: p.price, oldprice: p.oldprice || '', desc: p.desc || '', image: p.image, categoryId: p.categoryId, active: p.active }; });
         await db.ref('products').set(prodsObj);
-        renderAll(); // إعادة عرض كل شيء (سيتم تطبيق آخر بحث إن وجد)
+        renderAll();
     }
 
     function renderAll() {
         renderAds();
         renderCategories();
-        renderFilteredProducts(lastSearchText); // استخدام آخر نص بحث
+        renderFilteredProducts(lastSearchText);
     }
 
-    // دالة عرض المنتجات مع فلترة حسب النص
-    function renderFilteredProducts(searchText) {
-        const container = document.getElementById('productsList');
-        const catsMap = Object.fromEntries(categories.map(c => [c.id, c.name]));
-        let filtered = [...products]; // ننسخ المصفوفة
-        if (searchText && searchText.trim() !== "") {
-            const lowerSearch = searchText.trim().toLowerCase();
-            filtered = products.filter(p => p.name.toLowerCase().includes(lowerSearch));
-        }
-        container.innerHTML = filtered.map(p => `
-            <div class="product-item">
-                <div class="flex-between"><span><img src="${p.image}" width="30"> ${p.name} - ${p.price} $</span><span class="badge ${p.active ? 'badge-active' : 'badge-inactive'}">${p.active ? 'نشط' : 'مخفي'}</span></div>
-                <div>الفئة: ${catsMap[p.categoryId] || 'غير محدد'}</div>
-                <div class="flex-between">
-                    <button onclick="editProductGlobal('${p.id}')">تعديل</button>
-                    <button class="danger" onclick="deleteProduct('${p.id}')">حذف</button>
-                    <button onclick="toggleProdActive('${p.id}')">${p.active ? 'إخفاء' : 'إظهار'}</button>
-                </div>
-                <div id="editGlobal_${p.id}" style="display:none;">
-                    <input type="text" id="gName_${p.id}" value="${p.name}">
-                    <input type="text" id="gPrice_${p.id}" value="${p.price}">
-                    <input type="text" id="gOld_${p.id}" value="${p.oldprice || ''}">
-                    <textarea id="gDesc_${p.id}">${p.desc || ''}</textarea>
-                    <input type="text" id="gImg_${p.id}" value="${p.image}">
-                    <button class="success" onclick="updateProductGlobal('${p.id}')">حفظ</button>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    // ربط حدث البحث
-    function bindSearchEvent() {
-        const searchInput = document.getElementById('searchAllProducts');
-        if (searchInput) {
-            searchInput.addEventListener('input', (e) => {
-                lastSearchText = e.target.value;
-                renderFilteredProducts(lastSearchText);
-            });
-        }
-    }
-
-    // ---------- الإعلانات ----------
+    // -------------------- الإعلانات --------------------
     function renderAds() {
         const container = document.getElementById('adsList');
         container.innerHTML = ads.map(ad => `
-            <div class="product-item">
+            <div class="product-item" id="adItem_${ad.id}">
                 <div class="flex-between"><img src="${ad.image}" width="50"><span class="badge ${ad.active ? 'badge-active' : 'badge-inactive'}">${ad.active ? 'نشط' : 'مخفي'}</span></div>
                 <p>${ad.text || ''}</p>
                 <div class="flex-between">
                     <button onclick="toggleAd('${ad.id}')">${ad.active ? 'إخفاء' : 'إظهار'}</button>
                     <button class="danger" onclick="deleteAd('${ad.id}')">حذف</button>
-                    <button class="success" onclick="editAd('${ad.id}')">تعديل</button>
+                    <button class="success" onclick="showEditAdForm('${ad.id}')">تعديل</button>
                 </div>
-                <div id="editAd_${ad.id}" style="display:none;"><input type="text" id="editAdImg_${ad.id}" value="${ad.image}"><input type="text" id="editAdTxt_${ad.id}" value="${ad.text || ''}"><button class="success" onclick="updateAd('${ad.id}')">حفظ</button></div>
+                <div id="editAdForm_${ad.id}" style="display:none; margin-top:10px;">
+                    <div class="upload-group">
+                        <input type="file" id="editAdImageFile_${ad.id}" accept="image/*">
+                        <button class="success" onclick="updateAdImage('${ad.id}')">تحديث الصورة</button>
+                    </div>
+                    <input type="text" id="editAdText_${ad.id}" value="${ad.text || ''}" placeholder="نص الإعلان">
+                    <button onclick="updateAdText('${ad.id}')">حفظ النص</button>
+                    <div id="editAdLoader_${ad.id}" style="display:none;"><span class="loader-small"></span> جاري...</div>
+                </div>
             </div>
         `).join('');
     }
 
     window.toggleAd = async (id) => { const ad = ads.find(a => a.id === id); ad.active = !ad.active; await saveAll(); };
     window.deleteAd = async (id) => { ads = ads.filter(a => a.id !== id); await saveAll(); };
-    window.editAd = (id) => { const el = document.getElementById(`editAd_${id}`); el.style.display = el.style.display === 'none' ? 'block' : 'none'; };
-    window.updateAd = async (id) => { const ad = ads.find(a => a.id === id); ad.image = document.getElementById(`editAdImg_${id}`).value; ad.text = document.getElementById(`editAdTxt_${id}`).value; await saveAll(); document.getElementById(`editAd_${id}`).style.display = 'none'; };
-    document.getElementById('addAdBtn').onclick = async () => { const img = document.getElementById('newAdImage').value; const txt = document.getElementById('newAdText').value; if (!img) { alert("رابط الصورة مطلوب"); return; } ads.push({ id: Date.now().toString(), image: img, text: txt, active: true }); await saveAll(); document.getElementById('newAdImage').value = ''; document.getElementById('newAdText').value = ''; };
+    window.showEditAdForm = (id) => { const el = document.getElementById(`editAdForm_${id}`); el.style.display = el.style.display === 'none' ? 'block' : 'none'; };
+    window.updateAdImage = async (id) => {
+        const file = document.getElementById(`editAdImageFile_${id}`).files[0];
+        if (!file) return alert("اختر صورة أولاً");
+        const loader = document.getElementById(`editAdLoader_${id}`);
+        loader.style.display = 'flex';
+        try {
+            const url = await uploadImageToCloudinary(file);
+            const ad = ads.find(a => a.id === id);
+            ad.image = url;
+            await saveAll();
+            document.getElementById(`editAdImageFile_${id}`).value = '';
+        } catch (err) { alert(err.message); }
+        loader.style.display = 'none';
+    };
+    window.updateAdText = async (id) => {
+        const newText = document.getElementById(`editAdText_${id}`).value;
+        const ad = ads.find(a => a.id === id);
+        ad.text = newText;
+        await saveAll();
+        document.getElementById(`editAdForm_${id}`).style.display = 'none';
+    };
 
-    // ---------- الفئات ----------
+    // إضافة إعلان
+    document.getElementById('addAdBtn').onclick = async () => {
+        const file = document.getElementById('newAdImageFile').files[0];
+        const text = document.getElementById('newAdText').value;
+        if (!file) return alert("اختر صورة");
+        const loader = document.getElementById('newAdLoader');
+        loader.style.display = 'flex';
+        const btn = document.getElementById('addAdBtn');
+        btn.disabled = true;
+        try {
+            const url = await uploadImageToCloudinary(file);
+            ads.push({ id: Date.now().toString(), image: url, text: text || '', active: true });
+            await saveAll();
+            document.getElementById('newAdImageFile').value = '';
+            document.getElementById('newAdText').value = '';
+        } catch (err) { alert(err.message); }
+        loader.style.display = 'none';
+        btn.disabled = false;
+    };
+
+    // -------------------- الفئات --------------------
     function renderCategories() {
         const container = document.getElementById('categoriesList');
         container.innerHTML = categories.map(cat => `
-            <div class="category-item">
+            <div class="category-item" id="catItem_${cat.id}">
                 <div class="category-title" onclick="toggleCatProducts('${cat.id}')">
-                    <span><img src="${cat.image}" width="30"> ${cat.name} <span class="badge ${cat.active ? 'badge-active' : 'badge-inactive'}">${cat.active ? 'نشط' : 'مخفي'}</span></span>
+                    <span><img src="${cat.image}" width="30" style="border-radius:50%;"> ${cat.name} <span class="badge ${cat.active ? 'badge-active' : 'badge-inactive'}">${cat.active ? 'نشط' : 'مخفي'}</span></span>
                     <i class="fas fa-chevron-down"></i>
                 </div>
                 <div id="catProducts_${cat.id}" class="category-products">
+                    <div class="flex-between">
+                        <button onclick="showEditCatForm('${cat.id}')">تعديل الفئة</button>
+                        <button class="danger" onclick="deleteCategory('${cat.id}')">حذف الفئة</button>
+                        <button onclick="toggleCatActive('${cat.id}')">${cat.active ? 'إخفاء' : 'إظهار'}</button>
+                    </div>
+                    <div id="editCatForm_${cat.id}" style="display:none; margin-top:10px; padding:10px; background:#fff; border-radius:15px;">
+                        <div class="upload-group">
+                            <input type="file" id="editCatImageFile_${cat.id}" accept="image/*">
+                            <button class="success" onclick="updateCatImage('${cat.id}')">تحديث الصورة</button>
+                        </div>
+                        <input type="text" id="editCatName_${cat.id}" value="${cat.name}" placeholder="اسم الفئة">
+                        <button onclick="updateCatName('${cat.id}')">حفظ الاسم</button>
+                        <div id="editCatLoader_${cat.id}" style="display:none;"><span class="loader-small"></span> جاري...</div>
+                    </div>
                     <div class="add-product-form">
                         <h4>➕ إضافة منتج جديد لهذه الفئة</h4>
                         <input type="text" id="prodName_${cat.id}" placeholder="اسم المنتج">
                         <input type="text" id="prodPrice_${cat.id}" placeholder="السعر $">
-                        <input type="text" id="prodOld_${cat.id}" placeholder="السعر قبل الخصم (اختياري)">
+                        <input type="text" id="prodOld_${cat.id}" placeholder="السعر قبل الخصم">
                         <textarea id="prodDesc_${cat.id}" placeholder="الوصف"></textarea>
-                        <input type="text" id="prodImg_${cat.id}" placeholder="رابط الصورة">
-                        <button onclick="addProduct('${cat.id}')">إضافة منتج</button>
-                    </div>
-                    <div class="flex-between">
-                        <button onclick="editCategory('${cat.id}')">تعديل الفئة</button>
-                        <button class="danger" onclick="deleteCategory('${cat.id}')">حذف الفئة</button>
-                        <button onclick="toggleCatActive('${cat.id}')">${cat.active ? 'إخفاء' : 'إظهار'}</button>
+                        <div class="upload-group">
+                            <input type="file" id="prodImg_${cat.id}" accept="image/*">
+                            <button id="addProdBtn_${cat.id}" onclick="addProduct('${cat.id}')">إضافة منتج</button>
+                        </div>
+                        <div id="uploadLoader_${cat.id}" style="display:none;"><span class="loader-small"></span> جاري رفع الصورة...</div>
                     </div>
                     <div id="prodsList_${cat.id}">${products.filter(p => p.categoryId === cat.id && p.active).map(p => `
-                        <div class="product-item">
+                        <div class="product-item" id="prodItem_${p.id}">
                             <div class="flex-between"><span><img src="${p.image}" width="30"> ${p.name} - ${p.price} $</span><span class="badge ${p.active ? 'badge-active' : 'badge-inactive'}">${p.active ? 'نشط' : 'مخفي'}</span></div>
                             <div class="flex-between">
-                                <button onclick="editProduct('${p.id}')">تعديل</button>
+                                <button onclick="showEditProductForm('${p.id}')">تعديل</button>
                                 <button class="danger" onclick="deleteProduct('${p.id}')">حذف</button>
                                 <button onclick="toggleProdActive('${p.id}')">${p.active ? 'إخفاء' : 'إظهار'}</button>
                             </div>
-                            <div id="editProd_${p.id}" style="display:none;">
-                                <input type="text" id="editName_${p.id}" value="${p.name}">
-                                <input type="text" id="editPrice_${p.id}" value="${p.price}">
-                                <input type="text" id="editOld_${p.id}" value="${p.oldprice || ''}">
-                                <textarea id="editDesc_${p.id}">${p.desc || ''}</textarea>
-                                <input type="text" id="editImg_${p.id}" value="${p.image}">
-                                <button class="success" onclick="updateProduct('${p.id}')">حفظ</button>
+                            <div id="editProdForm_${p.id}" style="display:none; margin-top:10px; padding:10px; background:#fff; border-radius:15px;">
+                                <div class="upload-group">
+                                    <input type="file" id="editProdImgFile_${p.id}" accept="image/*">
+                                    <button class="success" onclick="updateProdImage('${p.id}')">تحديث الصورة</button>
+                                </div>
+                                <input type="text" id="editProdName_${p.id}" value="${p.name}">
+                                <input type="text" id="editProdPrice_${p.id}" value="${p.price}">
+                                <input type="text" id="editProdOld_${p.id}" value="${p.oldprice || ''}">
+                                <textarea id="editProdDesc_${p.id}">${p.desc || ''}</textarea>
+                                <button onclick="updateProductData('${p.id}')">حفظ التعديلات</button>
+                                <div id="editProdLoader_${p.id}" style="display:none;"><span class="loader-small"></span> جاري...</div>
                             </div>
                         </div>
                     `).join('')}</div>
@@ -361,19 +321,183 @@
     }
 
     window.toggleCatProducts = (id) => document.getElementById(`catProducts_${id}`).classList.toggle('open');
-    window.editCategory = async (id) => { const cat = categories.find(c => c.id === id); const newName = prompt("اسم جديد", cat.name); const newImg = prompt("رابط صورة", cat.image); if (newName) cat.name = newName; if (newImg) cat.image = newImg; await saveAll(); };
-    window.deleteCategory = async (id) => { if (confirm("حذف الفئة سيحذف منتجاتها")) { categories = categories.filter(c => c.id !== id); products = products.filter(p => p.categoryId !== id); await saveAll(); } };
+    window.showEditCatForm = (id) => { const el = document.getElementById(`editCatForm_${id}`); el.style.display = el.style.display === 'none' ? 'block' : 'none'; };
+    window.updateCatImage = async (id) => {
+        const file = document.getElementById(`editCatImageFile_${id}`).files[0];
+        if (!file) return alert("اختر صورة");
+        const loader = document.getElementById(`editCatLoader_${id}`);
+        loader.style.display = 'flex';
+        try {
+            const url = await uploadImageToCloudinary(file);
+            const cat = categories.find(c => c.id === id);
+            cat.image = url;
+            await saveAll();
+            document.getElementById(`editCatImageFile_${id}`).value = '';
+        } catch (err) { alert(err.message); }
+        loader.style.display = 'none';
+    };
+    window.updateCatName = async (id) => {
+        const newName = document.getElementById(`editCatName_${id}`).value;
+        const cat = categories.find(c => c.id === id);
+        cat.name = newName;
+        await saveAll();
+        document.getElementById(`editCatForm_${id}`).style.display = 'none';
+    };
+    window.deleteCategory = async (id) => {
+        if (confirm("حذف الفئة سيحذف منتجاتها")) {
+            categories = categories.filter(c => c.id !== id);
+            products = products.filter(p => p.categoryId !== id);
+            await saveAll();
+        }
+    };
     window.toggleCatActive = async (id) => { const cat = categories.find(c => c.id === id); cat.active = !cat.active; await saveAll(); };
-    window.addProduct = async (catId) => { const name = document.getElementById(`prodName_${catId}`).value.trim(); const price = document.getElementById(`prodPrice_${catId}`).value.trim(); if (!name || !price) { alert("اسم المنتج والسعر مطلوبان"); return; } const oldprice = document.getElementById(`prodOld_${catId}`).value; const desc = document.getElementById(`prodDesc_${catId}`).value; let img = document.getElementById(`prodImg_${catId}`).value; if (!img) img = "https://via.placeholder.com/200x200"; products.push({ id: Date.now().toString(), name, price, oldprice, desc, image: img, categoryId: catId, active: true }); await saveAll(); document.getElementById(`prodName_${catId}`).value = ''; document.getElementById(`prodPrice_${catId}`).value = ''; document.getElementById(`prodOld_${catId}`).value = ''; document.getElementById(`prodDesc_${catId}`).value = ''; document.getElementById(`prodImg_${catId}`).value = ''; };
-    window.editProduct = (id) => { const el = document.getElementById(`editProd_${id}`); el.style.display = el.style.display === 'none' ? 'block' : 'none'; };
-    window.updateProduct = async (id) => { const prod = products.find(p => p.id === id); prod.name = document.getElementById(`editName_${id}`).value; prod.price = document.getElementById(`editPrice_${id}`).value; prod.oldprice = document.getElementById(`editOld_${id}`).value; prod.desc = document.getElementById(`editDesc_${id}`).value; prod.image = document.getElementById(`editImg_${id}`).value; await saveAll(); document.getElementById(`editProd_${id}`).style.display = 'none'; };
+
+    // إضافة فئة جديدة
+    document.getElementById('addCategoryBtn').onclick = async () => {
+        const name = document.getElementById('newCatName').value.trim();
+        const file = document.getElementById('newCatImageFile').files[0];
+        if (!name || !file) return alert("اسم الفئة والصورة مطلوبان");
+        const loader = document.getElementById('newCatLoader');
+        const btn = document.getElementById('addCategoryBtn');
+        loader.style.display = 'flex';
+        btn.disabled = true;
+        try {
+            const url = await uploadImageToCloudinary(file);
+            categories.push({ id: Date.now().toString(), name, image: url, active: true });
+            await saveAll();
+            document.getElementById('newCatName').value = '';
+            document.getElementById('newCatImageFile').value = '';
+        } catch (err) { alert(err.message); }
+        loader.style.display = 'none';
+        btn.disabled = false;
+    };
+
+    // -------------------- المنتجات --------------------
+    window.addProduct = async (catId) => {
+        const name = document.getElementById(`prodName_${catId}`).value.trim();
+        const price = document.getElementById(`prodPrice_${catId}`).value.trim();
+        if (!name || !price) return alert("اسم المنتج والسعر مطلوبان");
+        const oldprice = document.getElementById(`prodOld_${catId}`).value.trim();
+        const desc = document.getElementById(`prodDesc_${catId}`).value.trim();
+        const file = document.getElementById(`prodImg_${catId}`).files[0];
+        if (!file) return alert("اختر صورة");
+        const loader = document.getElementById(`uploadLoader_${catId}`);
+        const btn = document.getElementById(`addProdBtn_${catId}`);
+        loader.style.display = 'flex';
+        btn.disabled = true;
+        try {
+            const url = await uploadImageToCloudinary(file);
+            products.push({
+                id: Date.now().toString(),
+                name, price, oldprice, desc,
+                image: url,
+                categoryId: catId,
+                active: true
+            });
+            await saveAll();
+            document.getElementById(`prodName_${catId}`).value = '';
+            document.getElementById(`prodPrice_${catId}`).value = '';
+            document.getElementById(`prodOld_${catId}`).value = '';
+            document.getElementById(`prodDesc_${catId}`).value = '';
+            document.getElementById(`prodImg_${catId}`).value = '';
+        } catch (err) { alert(err.message); }
+        loader.style.display = 'none';
+        btn.disabled = false;
+    };
+    window.showEditProductForm = (id) => { const el = document.getElementById(`editProdForm_${id}`); el.style.display = el.style.display === 'none' ? 'block' : 'none'; };
+    window.updateProdImage = async (id) => {
+        const file = document.getElementById(`editProdImgFile_${id}`).files[0];
+        if (!file) return alert("اختر صورة");
+        const loader = document.getElementById(`editProdLoader_${id}`);
+        loader.style.display = 'flex';
+        try {
+            const url = await uploadImageToCloudinary(file);
+            const prod = products.find(p => p.id === id);
+            prod.image = url;
+            await saveAll();
+            document.getElementById(`editProdImgFile_${id}`).value = '';
+        } catch (err) { alert(err.message); }
+        loader.style.display = 'none';
+    };
+    window.updateProductData = async (id) => {
+        const prod = products.find(p => p.id === id);
+        prod.name = document.getElementById(`editProdName_${id}`).value;
+        prod.price = document.getElementById(`editProdPrice_${id}`).value;
+        prod.oldprice = document.getElementById(`editProdOld_${id}`).value;
+        prod.desc = document.getElementById(`editProdDesc_${id}`).value;
+        await saveAll();
+        document.getElementById(`editProdForm_${id}`).style.display = 'none';
+    };
     window.deleteProduct = async (id) => { products = products.filter(p => p.id !== id); await saveAll(); };
     window.toggleProdActive = async (id) => { const prod = products.find(p => p.id === id); prod.active = !prod.active; await saveAll(); };
-    document.getElementById('addCategoryBtn').onclick = async () => { const name = document.getElementById('newCatName').value.trim(); if (!name) return; const img = document.getElementById('newCatImage').value.trim(); categories.push({ id: Date.now().toString(), name, image: img || "https://cdn-icons-png.flaticon.com/512/1077/1077035.png", active: true }); await saveAll(); document.getElementById('newCatName').value = ''; document.getElementById('newCatImage').value = "https://cdn-icons-png.flaticon.com/512/1077/1077035.png"; };
 
-    // دوال التعديل العامة للمنتجات من قسم "جميع المنتجات"
-    window.editProductGlobal = (id) => { const el = document.getElementById(`editGlobal_${id}`); el.style.display = el.style.display === 'none' ? 'block' : 'none'; };
-    window.updateProductGlobal = async (id) => { const prod = products.find(p => p.id === id); prod.name = document.getElementById(`gName_${id}`).value; prod.price = document.getElementById(`gPrice_${id}`).value; prod.oldprice = document.getElementById(`gOld_${id}`).value; prod.desc = document.getElementById(`gDesc_${id}`).value; prod.image = document.getElementById(`gImg_${id}`).value; await saveAll(); document.getElementById(`editGlobal_${id}`).style.display = 'none'; };
+    // -------------------- جميع المنتجات (مع بحث) --------------------
+    function renderFilteredProducts(searchText) {
+        const container = document.getElementById('productsList');
+        const catsMap = Object.fromEntries(categories.map(c => [c.id, c.name]));
+        let filtered = [...products];
+        if (searchText && searchText.trim() !== "") {
+            const lowerSearch = searchText.trim().toLowerCase();
+            filtered = products.filter(p => p.name.toLowerCase().includes(lowerSearch));
+        }
+        container.innerHTML = filtered.map(p => `
+            <div class="product-item" id="globalProdItem_${p.id}">
+                <div class="flex-between"><span><img src="${p.image}" width="30"> ${p.name} - ${p.price} $</span><span class="badge ${p.active ? 'badge-active' : 'badge-inactive'}">${p.active ? 'نشط' : 'مخفي'}</span></div>
+                <div>الفئة: ${catsMap[p.categoryId] || 'غير محدد'}</div>
+                <div class="flex-between">
+                    <button onclick="showGlobalEditForm('${p.id}')">تعديل</button>
+                    <button class="danger" onclick="deleteProduct('${p.id}')">حذف</button>
+                    <button onclick="toggleProdActive('${p.id}')">${p.active ? 'إخفاء' : 'إظهار'}</button>
+                </div>
+                <div id="globalEditForm_${p.id}" style="display:none; margin-top:10px; padding:10px; background:#f9f9f9; border-radius:15px;">
+                    <div class="upload-group">
+                        <input type="file" id="globalEditImgFile_${p.id}" accept="image/*">
+                        <button class="success" onclick="updateGlobalProdImage('${p.id}')">تحديث الصورة</button>
+                    </div>
+                    <input type="text" id="globalEditName_${p.id}" value="${p.name}">
+                    <input type="text" id="globalEditPrice_${p.id}" value="${p.price}">
+                    <input type="text" id="globalEditOld_${p.id}" value="${p.oldprice || ''}">
+                    <textarea id="globalEditDesc_${p.id}">${p.desc || ''}</textarea>
+                    <button onclick="updateGlobalProductData('${p.id}')">حفظ التعديلات</button>
+                    <div id="globalEditLoader_${p.id}" style="display:none;"><span class="loader-small"></span> جاري...</div>
+                </div>
+            </div>
+        `).join('');
+    }
+    window.showGlobalEditForm = (id) => { const el = document.getElementById(`globalEditForm_${id}`); el.style.display = el.style.display === 'none' ? 'block' : 'none'; };
+    window.updateGlobalProdImage = async (id) => {
+        const file = document.getElementById(`globalEditImgFile_${id}`).files[0];
+        if (!file) return alert("اختر صورة");
+        const loader = document.getElementById(`globalEditLoader_${id}`);
+        loader.style.display = 'flex';
+        try {
+            const url = await uploadImageToCloudinary(file);
+            const prod = products.find(p => p.id === id);
+            prod.image = url;
+            await saveAll();
+            document.getElementById(`globalEditImgFile_${id}`).value = '';
+        } catch (err) { alert(err.message); }
+        loader.style.display = 'none';
+    };
+    window.updateGlobalProductData = async (id) => {
+        const prod = products.find(p => p.id === id);
+        prod.name = document.getElementById(`globalEditName_${id}`).value;
+        prod.price = document.getElementById(`globalEditPrice_${id}`).value;
+        prod.oldprice = document.getElementById(`globalEditOld_${id}`).value;
+        prod.desc = document.getElementById(`globalEditDesc_${id}`).value;
+        await saveAll();
+        document.getElementById(`globalEditForm_${id}`).style.display = 'none';
+    };
+
+    function bindSearchEvent() {
+        const searchInput = document.getElementById('searchAllProducts');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                lastSearchText = e.target.value;
+                renderFilteredProducts(lastSearchText);
+            });
+        }
+    }
 
     function toggleSection(id) { document.getElementById(id).classList.toggle('open'); }
     loadData();
