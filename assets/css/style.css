@@ -717,6 +717,94 @@ body {
     .navbar-mobile {
         display: flex;
     }
+    /* شريط علوي للجوال (بدون sticky) */
+.mobile-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    background-color: white;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 0;
+}
+
+.mobile-logo a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #b5838d;
+    padding: 6px 12px;
+    border-radius: 40px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    white-space: nowrap;
+    transition: 0.3s;
+}
+
+.mobile-logo a:hover {
+    background-color: #9e6f7a;
+}
+
+.mobile-logo i {
+    font-size: 1rem;
+}
+
+.mobile-search-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    padding: 5px 15px;
+}
+
+.mobile-search-container i {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.mobile-search-container input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 8px 0;
+    font-size: 0.9rem;
+    font-family: 'Tajawal', sans-serif;
+    outline: none;
+}
+
+.clear-search-btn {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0 5px;
+    display: none;
+}
+
+.clear-search-btn:hover {
+    color: #e5989b;
+}
+
+/* صناديق الاقتراحات */
+.mobile-suggestions {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    margin: 5px 15px 0 15px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* إخفاء هذا الشريط على الشاشات الكبيرة */
+
     /* تعديلات أخرى موجودة سابقاً */
 }
 
@@ -773,4 +861,9 @@ body {
     margin-top: 5px;
     display: none;
     border: 1px solid #eee;
+}
+@media (min-width: 769px) {
+    .mobile-header {
+        display: none;
+    }
 }

@@ -425,6 +425,7 @@ if (mobileInput) {
             clearMobileBtn.style.display = 'none';
             document.getElementById('productsSection').style.display = 'none';
             document.body.style.overflow = 'auto';
+            
         });
     }
 }
@@ -501,16 +502,73 @@ window.addEventListener('click', (e) => {
 document.getElementById('wishlistIcon')?.addEventListener('click', () => alert('المفضلة قريباً'));
 
 // ===================== شاشة التحميل =====================
+// function showLoading() {
+//     let loader = document.getElementById('globalLoader');
+//     if (!loader) {
+//         loader = document.createElement('div');
+//         loader.id = 'globalLoader';
+//         loader.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); display:flex; justify-content:center; align-items:center; z-index:10000;';
+//         loader.innerHTML = '<div style="background:#b5838d; color:white; padding:15px 30px; border-radius:50px;">جاري التحميل...</div>';
+//         document.body.appendChild(loader);
+//     } else {
+//         loader.style.display = 'flex';
+//     }
+// }
+
 function showLoading() {
+    // إذا كان العنصر موجوداً بالفعل، أظهره فقط
     let loader = document.getElementById('globalLoader');
-    if (!loader) {
-        loader = document.createElement('div');
-        loader.id = 'globalLoader';
-        loader.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); display:flex; justify-content:center; align-items:center; z-index:10000;';
-        loader.innerHTML = '<div style="background:#b5838d; color:white; padding:15px 30px; border-radius:50px;">جاري التحميل...</div>';
-        document.body.appendChild(loader);
-    } else {
+    if (loader) {
         loader.style.display = 'flex';
+        return;
+    }
+    
+    // إنشاء عنصر التحميل الجديد
+    loader = document.createElement('div');
+    loader.id = 'globalLoader';
+    loader.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #faf8f6;      /* لون الموقع الأساسي */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        direction: rtl;
+        font-family: 'Tajawal', sans-serif;
+    `;
+    
+    // محتوى الواجهة: أيقونة + عبارة ترحيبية + تأثير تحميل بسيط (اختياري)
+    loader.innerHTML = `
+        <div style="text-align: center; max-width: 80%; padding: 20px;">
+            <i class="fas fa-feather-alt" style="font-size: 4rem; color: #b5838d; margin-bottom: 1rem;"></i>
+            <h2 style="color: #b5838d; font-size: 1.8rem; margin-bottom: 0.5rem;">أهلاً وسهلاً</h2>
+            <p style="color: #6d6875; font-size: 1.2rem; margin-bottom: 1.5rem;">في متجر إناث</p>
+            <div style="width: 40px; height: 40px; margin: 0 auto; border: 4px solid #e5989b; border-top-color: #b5838d; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+            <p style="color: #b5838d; margin-top: 1rem; font-size: 0.9rem;">جاري التحميل...</p>
+            <p style="color:#b5838d; margin-top: 1rem; font-size: 0.7rem;">تصميم وتطوير: أحمد كلاوي</p>
+        </div>
+    `;
+    
+    // إضافة حركة الدوران (اختياري)
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    document.body.appendChild(loader);
+}
+
+function hideLoading() {
+    const loader = document.getElementById('globalLoader');
+    if (loader) {
+        loader.style.display = 'none';
     }
 }
 
@@ -518,6 +576,9 @@ function hideLoading() {
     const loader = document.getElementById('globalLoader');
     if (loader) loader.style.display = 'none';
 }
+
+
+
 
 // ===================== بدء التطبيق =====================
 loadData();
